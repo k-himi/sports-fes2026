@@ -56,6 +56,38 @@ section.live-block h2{border-bottom-color:#e63946;color:#e63946}
 .error{background:#fee2e2;border:2px solid #e63946;border-radius:8px;padding:1.5rem;text-align:center}
 .error h2{color:#e63946;border:none;margin:0 0 .5rem}
 .empty{text-align:center;padding:2rem;color:#888}
+
+/* 下部タブ */
+.bottom-tabs{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:white;
+  border-top:2px solid #0a0a0a;
+  display:flex;
+  z-index:100;
+  box-shadow:0 -4px 12px rgba(0,0,0,.08);
+}
+.bt-btn{
+  flex:1;
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  padding:.6rem .2rem .55rem;
+  font-family:inherit;
+  font-weight:700;
+  font-size:.7rem;
+  color:#666;
+  border-top:3px solid transparent;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.15rem;
+  line-height:1.1;
+}
+.bt-btn:active{background:#f4f1ea}
+.bt-btn .bt-ico{font-size:1.2rem;line-height:1}
+section{scroll-margin-top:1rem}
+#sec-top,#sec-live,#sec-standings,#sec-schedule{scroll-margin-top:1rem}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
 </head>
@@ -347,19 +379,39 @@ function render(snapshot){
   }).join('');
 
   document.getElementById('container').innerHTML = `
-    <div class="report-header">
+    <div class="report-header" id="sec-top">
       <h1>🏃 体育祭 速報</h1>
       <div class="ts">スナップショット時刻：${dateStr}</div>
       <div class="progress">${done} / ${total} 試合完了</div>
     </div>
     <div class="viewer-note"><strong>📋 この資料について：</strong>本部システムから書き出した速報のスナップショットです。最新の状況を見るには、本部から新しい速報URLを受け取ってください。</div>
     ${delayHtml}
-    ${liveGames.length>0 ? `<section class="live-block"><h2>● 進行中 ${liveGames.length}試合</h2><div class="g-grid">${liveGames.map(gameCell).join('')}</div></section>` : ''}
-    ${nextGames.length>0 ? `<section class="next-block"><h2>次の試合 ${nextGames.length}件</h2><div class="g-grid">${nextGames.map(gameCell).join('')}</div></section>` : ''}
-    <section><h2>順位表</h2>${standingsHtml}</section>
-    <section><h2>試合スケジュール</h2>${scheduleHtml}</section>
+    <div id="sec-live">
+      ${liveGames.length>0 ? `<section class="live-block"><h2>● 進行中 ${liveGames.length}試合</h2><div class="g-grid">${liveGames.map(gameCell).join('')}</div></section>` : ''}
+      ${nextGames.length>0 ? `<section class="next-block"><h2>次の試合 ${nextGames.length}件</h2><div class="g-grid">${nextGames.map(gameCell).join('')}</div></section>` : ''}
+      ${liveGames.length===0 && nextGames.length===0 ? `<section class="next-block"><h2>進行中・次の試合</h2><div class="empty" style="padding:1rem;text-align:center;color:#999">該当する試合がありません</div></section>` : ''}
+    </div>
+    <section id="sec-standings"><h2>順位表</h2>${standingsHtml}</section>
+    <section id="sec-schedule"><h2>試合スケジュール</h2>${scheduleHtml}</section>
     <div class="footer">スナップショット：${dateStr} / 体育祭速報ビューア</div>
+    <div style="height:80px"></div>
+
+    <nav class="bottom-tabs">
+      <button class="bt-btn" data-target="sec-top"><span class="bt-ico">🏠</span><span>トップ</span></button>
+      <button class="bt-btn" data-target="sec-live"><span class="bt-ico">📺</span><span>LIVE</span></button>
+      <button class="bt-btn" data-target="sec-standings"><span class="bt-ico">🏆</span><span>順位</span></button>
+      <button class="bt-btn" data-target="sec-schedule"><span class="bt-ico">📋</span><span>日程</span></button>
+    </nav>
   `;
+  // タブクリックでスクロールジャンプ
+  document.querySelectorAll('.bt-btn').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const target = document.getElementById(b.dataset.target);
+      if(target){
+        target.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    });
+  });
 }
 
 // 初期化
