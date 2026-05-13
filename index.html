@@ -72,10 +72,10 @@ section.live-block h2{border-bottom-color:#e63946;color:#e63946}
   background:transparent;
   border:none;
   cursor:pointer;
-  padding:.6rem .2rem .55rem;
+  padding:.6rem .15rem .55rem;
   font-family:inherit;
   font-weight:700;
-  font-size:.7rem;
+  font-size:.65rem;
   color:#666;
   border-top:3px solid transparent;
   display:flex;
@@ -85,9 +85,163 @@ section.live-block h2{border-bottom-color:#e63946;color:#e63946}
   line-height:1.1;
 }
 .bt-btn:active{background:#f4f1ea}
-.bt-btn .bt-ico{font-size:1.2rem;line-height:1}
+.bt-btn .bt-ico{font-size:1.15rem;line-height:1}
 section{scroll-margin-top:1rem}
-#sec-top,#sec-live,#sec-standings,#sec-schedule{scroll-margin-top:1rem}
+#sec-top,#sec-live,#sec-standings,#sec-schedule,#sec-class{scroll-margin-top:1rem}
+
+/* クラス別ビュー */
+.cv-selector{
+  display:flex;flex-wrap:wrap;gap:.3rem;
+  margin-bottom:.8rem;
+  padding:.4rem;
+  background:white;
+  border:1.5px solid #0a0a0a;
+  border-radius:6px;
+}
+.cv-class-btn{
+  background:transparent;
+  border:1.5px solid #ccc;
+  border-radius:4px;
+  padding:.4rem .6rem;
+  font-family:'JetBrains Mono',monospace;
+  font-weight:700;
+  font-size:.82rem;
+  cursor:pointer;
+  min-width:48px;
+  color:#0a64f4;
+}
+.cv-class-btn.active{
+  background:#0a0a0a;
+  color:white;
+  border-color:#0a0a0a;
+}
+.cv-summary-card{
+  background:white;
+  border:2px solid #0a0a0a;
+  border-radius:8px;
+  margin-bottom:1rem;
+  overflow:hidden;
+  box-shadow:4px 4px 0 #0a0a0a;
+}
+.cv-summary-head{
+  background:#0a0a0a;
+  color:white;
+  padding:.7rem 1rem;
+  font-family:'Bebas Neue';
+  font-size:1.5rem;
+  letter-spacing:.05em;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.cv-total-badge{
+  font-size:.7rem;
+  background:rgba(255,255,255,.15);
+  padding:.2rem .5rem;
+  border-radius:3px;
+  font-family:'Noto Sans JP',sans-serif;
+  letter-spacing:0;
+}
+.cv-sport-block{
+  border-bottom:1px solid #e0dcd0;
+}
+.cv-sport-block:last-of-type{border-bottom:none}
+.cv-sport-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+  padding:.55rem .8rem;
+  font-size:.85rem;
+}
+.cv-sport-name{
+  font-weight:700;
+}
+.cv-league-tag{
+  display:inline-block;
+  background:#f4f1ea;
+  padding:.05rem .35rem;
+  border-radius:2px;
+  font-size:.7rem;
+  margin-left:.4rem;
+  font-family:'JetBrains Mono',monospace;
+}
+.cv-sport-stats{
+  display:flex;
+  gap:.6rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.78rem;
+  align-items:center;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.cv-wld{font-weight:700}
+.cv-wld .w{color:#2a9d8f}
+.cv-wld .l{color:#888}
+.cv-gf{color:#444}
+.cv-rank{
+  background:#e63946;
+  color:white;
+  padding:.15rem .45rem;
+  border-radius:3px;
+  font-weight:700;
+  font-size:.78rem;
+}
+.cv-rank.rank-1{background:#f4a261}
+.cv-rank.no-data{background:#ccc;color:#666}
+.cv-match-list{
+  padding:0 1rem .5rem 1.8rem;
+  background:#fafaf7;
+  border-top:1px dashed #e0dcd0;
+}
+.cv-match-row{
+  display:grid;
+  grid-template-columns:60px 1fr auto auto;
+  gap:.5rem;
+  align-items:center;
+  padding:.3rem 0;
+  font-size:.78rem;
+  border-bottom:1px dashed #eee;
+}
+.cv-match-row:last-child{border-bottom:none}
+.cv-match-no{
+  font-family:'JetBrains Mono',monospace;
+  color:#888;
+  font-size:.72rem;
+}
+.cv-match-opp{
+  font-family:'JetBrains Mono',monospace;
+  font-weight:700;
+}
+.cv-match-score{
+  font-family:'JetBrains Mono',monospace;
+  font-weight:700;
+  font-size:.85rem;
+}
+.cv-match-result{
+  width:24px;
+  height:22px;
+  border-radius:3px;
+  text-align:center;
+  line-height:22px;
+  font-weight:700;
+  font-size:.75rem;
+  color:white;
+}
+.cv-match-result.win{background:#2a9d8f}
+.cv-match-result.loss{background:#999}
+.cv-match-result.draw{background:#e63946}
+.cv-match-row.pending .cv-match-score{color:#ccc;font-weight:400}
+.cv-total-row{
+  background:#f4f1ea;
+  padding:.7rem 1rem;
+  border-top:2px solid #0a0a0a;
+  font-weight:700;
+}
+.cv-total-label{font-size:.85rem;color:#888;margin-bottom:.2rem}
+.cv-total-stats{
+  display:flex;gap:.8rem;flex-wrap:wrap;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;
+}
+.cv-total-stats .w{color:#2a9d8f}
+.cv-total-stats .l{color:#888}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
 </head>
@@ -378,6 +532,140 @@ function render(snapshot){
     </div>`;
   }).join('');
 
+  // === クラス別ビューを構築 ===
+  function buildClassView(selectedTeam){
+    const allTeams = [...new Set(SCHEDULE.flatMap(g=>[g.home, g.away]))].sort((a,b)=>{
+      const [ay, ac] = a.split('-').map(Number);
+      const [by, bc] = b.split('-').map(Number);
+      if(ay !== by) return ay - by;
+      return ac - bc;
+    });
+    if(!selectedTeam || !allTeams.includes(selectedTeam)) selectedTeam = allTeams[0];
+    const team = selectedTeam;
+    let totalW=0, totalL=0, totalD=0, totalGF=0, totalGA=0, totalGP=0;
+    const sportBlocks = sports.map(sport=>{
+      const sportGames = SCHEDULE.filter(g=>g.sport===sport && (g.home===team || g.away===team));
+      if(sportGames.length === 0){
+        return `<div class="cv-sport-block">
+          <div class="cv-sport-row">
+            <div class="cv-sport-name">${sport}</div>
+            <div class="cv-sport-stats"><span class="cv-rank no-data">未出場</span></div>
+          </div>
+        </div>`;
+      }
+      const league = sportGames[0].league;
+      let w=0, l=0, d=0, gf=0, ga=0, done=0;
+      sportGames.forEach(g=>{
+        const r = results[g.id];
+        if(!r || r.status !== 'done' || r.homeScore == null) return;
+        done++;
+        const isHome = g.home === team;
+        const myScore = isHome ? r.homeScore : r.awayScore;
+        const oppScore = isHome ? r.awayScore : r.homeScore;
+        gf += myScore; ga += oppScore;
+        if(myScore > oppScore) w++;
+        else if(myScore < oppScore) l++;
+        else d++;
+      });
+      totalW += w; totalL += l; totalD += d; totalGF += gf; totalGA += ga; totalGP += done;
+      // リーグ内順位
+      const leagueGames = SCHEDULE.filter(g=>g.sport===sport && g.league===league);
+      const teams2 = [...new Set(leagueGames.flatMap(g=>[g.home, g.away]))];
+      const stat = {};
+      teams2.forEach(t=>{ stat[t] = {team:t,pts:0,gf:0,ga:0}; });
+      leagueGames.forEach(g=>{
+        const r = results[g.id];
+        if(!r || r.status !== 'done' || r.homeScore == null) return;
+        stat[g.home].gf += r.homeScore; stat[g.home].ga += r.awayScore;
+        stat[g.away].gf += r.awayScore; stat[g.away].ga += r.homeScore;
+        if(r.homeScore > r.awayScore){ stat[g.home].pts += 3; }
+        else if(r.homeScore < r.awayScore){ stat[g.away].pts += 3; }
+        else{ stat[g.home].pts += 1; stat[g.away].pts += 1; }
+      });
+      const sorted = Object.values(stat).sort((a,b)=>{
+        if(b.pts !== a.pts) return b.pts - a.pts;
+        const aDiff = a.gf - a.ga, bDiff = b.gf - b.ga;
+        if(bDiff !== aDiff) return bDiff - aDiff;
+        return b.gf - a.gf;
+      });
+      const ranks = [];
+      sorted.forEach((r, i)=>{
+        if(i === 0) ranks.push(1);
+        else{
+          const prev = sorted[i-1];
+          const isTied = (r.pts === prev.pts && (r.gf-r.ga) === (prev.gf-prev.ga) && r.gf === prev.gf);
+          ranks.push(isTied ? ranks[i-1] : i+1);
+        }
+      });
+      const myIdx = sorted.findIndex(s=>s.team===team);
+      const myRank = myIdx >= 0 ? ranks[myIdx] : null;
+      const diff = gf - ga;
+      const diffStr = diff > 0 ? `+${diff}` : `${diff}`;
+      const rankClass = myRank === 1 ? 'rank-1' : '';
+      const rankText = (done === sportGames.length && myRank) ? `${myRank}位` : (done > 0 ? `暫定${myRank}位` : '未確定');
+      const matchRowsHtml = sportGames.map(g=>{
+        const r = results[g.id];
+        const isHome = g.home === team;
+        const opponent = isHome ? g.away : g.home;
+        if(!r || r.status !== 'done' || r.homeScore == null){
+          return `<div class="cv-match-row pending">
+            <span class="cv-match-no">試合${g.no}</span>
+            <span class="cv-match-opp">vs ${opponent}</span>
+            <span class="cv-match-score">未実施</span>
+          </div>`;
+        }
+        const myScore = isHome ? r.homeScore : r.awayScore;
+        const oppScore = isHome ? r.awayScore : r.homeScore;
+        let resultLabel = '', resultClass = '';
+        if(myScore > oppScore){ resultLabel = '勝'; resultClass = 'win'; }
+        else if(myScore < oppScore){ resultLabel = '負'; resultClass = 'loss'; }
+        else{ resultLabel = '分'; resultClass = 'draw'; }
+        return `<div class="cv-match-row ${resultClass}">
+          <span class="cv-match-no">試合${g.no}</span>
+          <span class="cv-match-opp">vs ${opponent}</span>
+          <span class="cv-match-score">${myScore} - ${oppScore}</span>
+          <span class="cv-match-result ${resultClass}">${resultLabel}</span>
+        </div>`;
+      }).join('');
+      return `<div class="cv-sport-block">
+        <div class="cv-sport-row">
+          <div class="cv-sport-name">${sport}<span class="cv-league-tag">${league}リーグ</span></div>
+          <div class="cv-sport-stats">
+            <span class="cv-wld"><span class="w">${w}</span>勝${d}分<span class="l">${l}</span>負</span>
+            <span class="cv-gf">${gf}-${ga} (${diffStr})</span>
+            <span class="cv-rank ${rankClass}">${rankText}</span>
+          </div>
+        </div>
+        <div class="cv-match-list">${matchRowsHtml}</div>
+      </div>`;
+    }).join('');
+    const totalDiff = totalGF - totalGA;
+    const totalDiffStr = totalDiff > 0 ? `+${totalDiff}` : `${totalDiff}`;
+    const selectorHtml = `<div class="cv-selector">
+      ${allTeams.map(t=>`<button class="cv-class-btn ${t===selectedTeam?'active':''}" data-team="${t}">${t}</button>`).join('')}
+    </div>`;
+    return `${selectorHtml}
+      <div class="cv-summary-card">
+        <div class="cv-summary-head">
+          <span>${team}</span>
+          <span class="cv-total-badge">${totalGP}試合完了</span>
+        </div>
+        ${sportBlocks}
+        <div class="cv-total-row">
+          <div class="cv-total-label">総合戦績</div>
+          <div class="cv-total-stats">
+            <span><span class="w">${totalW}</span>勝 ${totalD}分 <span class="l">${totalL}</span>負</span>
+            <span>得${totalGF} 失${totalGA} (${totalDiffStr})</span>
+          </div>
+        </div>
+      </div>`;
+  }
+  // 現在選択中のクラス（クロージャ変数）
+  if(!window._viewerSelectedClass){
+    const firstTeam = [...new Set(SCHEDULE.flatMap(g=>[g.home, g.away]))].sort()[0];
+    window._viewerSelectedClass = firstTeam;
+  }
+
   document.getElementById('container').innerHTML = `
     <div class="report-header" id="sec-top">
       <h1>🏃 体育祭 速報</h1>
@@ -392,6 +680,7 @@ function render(snapshot){
       ${liveGames.length===0 && nextGames.length===0 ? `<section class="next-block"><h2>進行中・次の試合</h2><div class="empty" style="padding:1rem;text-align:center;color:#999">該当する試合がありません</div></section>` : ''}
     </div>
     <section id="sec-standings"><h2>順位表</h2>${standingsHtml}</section>
+    <section id="sec-class"><h2>クラス別戦績</h2><div id="class-view-container">${buildClassView(window._viewerSelectedClass)}</div></section>
     <section id="sec-schedule"><h2>試合スケジュール</h2>${scheduleHtml}</section>
     <div class="footer">スナップショット：${dateStr} / 体育祭速報ビューア</div>
     <div style="height:80px"></div>
@@ -400,6 +689,7 @@ function render(snapshot){
       <button class="bt-btn" data-target="sec-top"><span class="bt-ico">🏠</span><span>トップ</span></button>
       <button class="bt-btn" data-target="sec-live"><span class="bt-ico">📺</span><span>LIVE</span></button>
       <button class="bt-btn" data-target="sec-standings"><span class="bt-ico">🏆</span><span>順位</span></button>
+      <button class="bt-btn" data-target="sec-class"><span class="bt-ico">👥</span><span>クラス</span></button>
       <button class="bt-btn" data-target="sec-schedule"><span class="bt-ico">📋</span><span>日程</span></button>
     </nav>
   `;
@@ -412,6 +702,17 @@ function render(snapshot){
       }
     });
   });
+  // クラス選択ボタン（イベント委譲）
+  function attachClassBtnEvents(){
+    document.querySelectorAll('.cv-class-btn').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        window._viewerSelectedClass = b.dataset.team;
+        document.getElementById('class-view-container').innerHTML = buildClassView(window._viewerSelectedClass);
+        attachClassBtnEvents();
+      });
+    });
+  }
+  attachClassBtnEvents();
 }
 
 // 初期化
