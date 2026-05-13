@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>体育祭 速報ビューア</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Yu Gothic',sans-serif;background:#f4f1ea;color:#0a0a0a;padding:1rem;line-height:1.5;font-size:14px}
+.container{max-width:900px;margin:0 auto}
+.report-header{background:#0a0a0a;color:white;padding:1rem 1.2rem;border-radius:8px;margin-bottom:1rem;border:2px solid #0a0a0a;box-shadow:4px 4px 0 #e63946}
+.report-header h1{font-size:1.3rem;letter-spacing:.03em}
+.report-header .ts{font-size:.85rem;opacity:.8;margin-top:.3rem}
+.report-header .progress{margin-top:.5rem;font-size:.85rem;background:rgba(255,255,255,.15);padding:.3rem .6rem;border-radius:4px;display:inline-block}
+.viewer-note{background:#fff3cd;border:1.5px solid #d97706;border-radius:6px;padding:.7rem 1rem;margin-bottom:1rem;font-size:.85rem}
+.viewer-note strong{color:#7c4a00}
+.delay-info{background:#fee2e2;border:1.5px solid #e63946;border-radius:6px;padding:.7rem 1rem;margin-bottom:1rem;font-size:.85rem}
+.delay-info span{background:white;border:1px solid #e63946;border-radius:3px;padding:.15rem .5rem;margin-left:.3rem;font-weight:700;display:inline-block;margin-top:.2rem}
+h2{font-size:1.05rem;margin:1.2rem 0 .6rem;padding-bottom:.3rem;border-bottom:2px solid #0a0a0a}
+section.live-block,section.next-block{background:white;border:2px solid #0a0a0a;border-radius:8px;padding:.8rem;margin-bottom:1rem}
+section.live-block{border-color:#e63946}
+section.live-block h2{border-bottom-color:#e63946;color:#e63946}
+.g-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem}
+.g-cell{background:#f4f1ea;border:1.5px solid #0a0a0a;border-radius:5px;padding:.5rem;text-align:center}
+.g-cell.done.home-win{background:linear-gradient(90deg,rgba(42,157,143,.18),#f4f1ea)}
+.g-cell.done.away-win{background:linear-gradient(270deg,rgba(42,157,143,.18),#f4f1ea)}
+.g-cell.pending{background:#fafaf7;color:#888}
+.g-teams{font-weight:700;font-size:.95rem;font-family:'JetBrains Mono',monospace}
+.g-teams .vs{color:#888;font-weight:400;margin:0 .3rem}
+.g-score{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.3rem;margin-top:.2rem;color:#2a9d8f}
+.g-status{font-size:.7rem;color:#888;margin-top:.2rem;font-weight:700;letter-spacing:.05em}
+.sp-block{margin-bottom:1.2rem}
+.st-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.6rem}
+.st-card{background:white;border:1.5px solid #0a0a0a;border-radius:5px;overflow:hidden}
+.st-head{background:#0a0a0a;color:white;padding:.3rem .7rem;font-weight:700;font-size:.85rem;display:flex;justify-content:space-between;align-items:center}
+.st-head span{font-size:.7rem;opacity:.7;font-weight:400}
+.st-table{width:100%;border-collapse:collapse;font-size:.78rem}
+.st-table th,.st-table td{padding:.25rem .35rem;text-align:center;border-bottom:1px solid #eee}
+.st-table th{background:#f4f1ea;font-size:.65rem}
+.st-table td:nth-child(2){text-align:left;font-weight:700}
+.st-table tr.r1 td{background:rgba(244,162,97,.18)}
+.slot{background:white;border:1.5px solid #ddd;border-radius:5px;margin-bottom:.4rem;overflow:hidden}
+.slot.live{border-color:#e63946;border-width:2px}
+.slot.done{opacity:.7}
+.slot-head{background:#f4f1ea;padding:.35rem .7rem;display:flex;justify-content:space-between;align-items:center;font-size:.8rem}
+.slot.live .slot-head{background:#fee2e2}
+.slot-no{font-weight:700}
+.slot-time{font-family:'JetBrains Mono',monospace;font-weight:700}
+.slot-games{padding:.3rem}
+.sg-row{display:grid;grid-template-columns:78px 1fr auto;gap:.4rem;align-items:center;padding:.25rem .3rem;border-bottom:1px dashed #eee;font-size:.78rem}
+.sg-row:last-child{border-bottom:none}
+.sg-sport{background:#0a0a0a;color:white;padding:.1rem .35rem;border-radius:2px;font-size:.65rem;font-weight:700;text-align:center}
+.sg-match{font-weight:700;font-family:'JetBrains Mono',monospace}
+.sg-score{font-family:'JetBrains Mono',monospace;font-weight:700;min-width:38px;text-align:right}
+.footer{text-align:center;margin-top:1.5rem;padding:1rem;font-size:.75rem;color:#888}
+.error{background:#fee2e2;border:2px solid #e63946;border-radius:8px;padding:1.5rem;text-align:center}
+.error h2{color:#e63946;border:none;margin:0 0 .5rem}
+.empty{text-align:center;padding:2rem;color:#888}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+</head>
+<body>
+<div class="container" id="container">
+  <div class="empty">読み込み中...</div>
+</div>
+
+<script>
+// ===== タイムテーブル（本体と同じ）=====
+const SCHEDULE = [
+  {no:1, time:"13:25", end:"13:35", venue:"第二体育館A", sport:"男子バスケ", league:"D", home:"1-5", away:"3-4"},
+  {no:1, time:"13:25", end:"13:35", venue:"第二体育館B", sport:"女子バスケ", league:"E", home:"1-4", away:"1-6"},
+  {no:1, time:"13:25", end:"13:35", venue:"第一グラウンド", sport:"男子サッカー", league:"C", home:"3-3", away:"3-5"},
+  {no:1, time:"13:25", end:"13:35", venue:"第二グラウンド", sport:"女子サッカー", league:"F", home:"2-1", away:"3-1"},
+  {no:1, time:"13:25", end:"13:35", venue:"下テニスコート", sport:"男子バレー", league:"F", home:"2-3", away:"2-5"},
+  {no:1, time:"13:25", end:"13:35", venue:"上テニスコート", sport:"女子バレー", league:"A", home:"2-6", away:"3-2"},
+  {no:2, time:"13:45", end:"13:55", venue:"第二体育館A", sport:"男子バスケ", league:"B", home:"3-2", away:"3-6"},
+  {no:2, time:"13:45", end:"13:55", venue:"第二体育館B", sport:"女子バスケ", league:"B", home:"1-5", away:"3-3"},
+  {no:2, time:"13:45", end:"13:55", venue:"第一グラウンド", sport:"男子サッカー", league:"A", home:"1-4", away:"1-6"},
+  {no:2, time:"13:45", end:"13:55", venue:"第二グラウンド", sport:"女子サッカー", league:"D", home:"1-2", away:"1-3"},
+  {no:2, time:"13:45", end:"13:55", venue:"下テニスコート", sport:"男子バレー", league:"A", home:"2-1", away:"2-6"},
+  {no:2, time:"13:45", end:"13:55", venue:"上テニスコート", sport:"女子バレー", league:"C", home:"1-1", away:"3-4"},
+  {no:3, time:"14:05", end:"14:15", venue:"第二体育館A", sport:"男子バスケ", league:"E", home:"1-1", away:"2-3"},
+  {no:3, time:"14:05", end:"14:15", venue:"第二体育館B", sport:"女子バスケ", league:"C", home:"3-5", away:"3-6"},
+  {no:3, time:"14:05", end:"14:15", venue:"第一グラウンド", sport:"男子サッカー", league:"C", home:"2-4", away:"3-3"},
+  {no:3, time:"14:05", end:"14:15", venue:"第二グラウンド", sport:"女子サッカー", league:"F", home:"2-2", away:"3-1"},
+  {no:3, time:"14:05", end:"14:15", venue:"下テニスコート", sport:"男子バレー", league:"F", home:"2-5", away:"3-1"},
+  {no:3, time:"14:05", end:"14:15", venue:"上テニスコート", sport:"女子バレー", league:"A", home:"2-1", away:"2-6"},
+  {no:4, time:"14:25", end:"14:35", venue:"第二体育館A", sport:"男子バスケ", league:"D", home:"1-5", away:"2-6"},
+  {no:4, time:"14:25", end:"14:35", venue:"第二体育館B", sport:"女子バスケ", league:"E", home:"1-4", away:"2-1"},
+  {no:4, time:"14:25", end:"14:35", venue:"第一グラウンド", sport:"男子サッカー", league:"E", home:"1-2", away:"3-2"},
+  {no:4, time:"14:25", end:"14:35", venue:"第二グラウンド", sport:"女子サッカー", league:"E", home:"2-4", away:"3-3"},
+  {no:4, time:"14:25", end:"14:35", venue:"下テニスコート", sport:"男子バレー", league:"B", home:"1-3", away:"2-2"},
+  {no:4, time:"14:25", end:"14:35", venue:"上テニスコート", sport:"女子バレー", league:"D", home:"1-6", away:"2-3"},
+  {no:5, time:"14:45", end:"14:55", venue:"第二体育館A", sport:"男子バスケ", league:"F", home:"1-4", away:"3-3"},
+  {no:5, time:"14:45", end:"14:55", venue:"第二体育館B", sport:"女子バスケ", league:"F", home:"1-2", away:"2-2"},
+  {no:5, time:"14:45", end:"14:55", venue:"第一グラウンド", sport:"男子サッカー", league:"F", home:"1-3", away:"3-1"},
+  {no:5, time:"14:45", end:"14:55", venue:"第二グラウンド", sport:"女子サッカー", league:"A", home:"2-3", away:"3-6"},
+  {no:5, time:"14:45", end:"14:55", venue:"下テニスコート", sport:"男子バレー", league:"E", home:"1-1", away:"2-4"},
+  {no:5, time:"14:45", end:"14:55", venue:"上テニスコート", sport:"女子バレー", league:"C", home:"1-5", away:"3-4"},
+  {no:6, time:"15:05", end:"15:15", venue:"第二体育館A", sport:"男子バスケ", league:"C", home:"1-2", away:"1-6"},
+  {no:6, time:"15:05", end:"15:15", venue:"第二体育館B", sport:"女子バスケ", league:"B", home:"3-3", away:"3-4"},
+  {no:6, time:"15:05", end:"15:15", venue:"第一グラウンド", sport:"男子サッカー", league:"B", home:"2-3", away:"1-1"},
+  {no:6, time:"15:05", end:"15:15", venue:"第二グラウンド", sport:"女子サッカー", league:"C", home:"1-5", away:"2-5"},
+  {no:6, time:"15:05", end:"15:15", venue:"下テニスコート", sport:"男子バレー", league:"B", home:"2-2", away:"3-5"},
+  {no:6, time:"15:05", end:"15:15", venue:"上テニスコート", sport:"女子バレー", league:"E", home:"1-3", away:"1-4"},
+  {no:7, time:"15:25", end:"15:35", venue:"第二体育館A", sport:"男子バスケ", league:"A", home:"1-3", away:"2-2"},
+  {no:7, time:"15:25", end:"15:35", venue:"第二体育館B", sport:"女子バスケ", league:"A", home:"2-3", away:"3-1"},
+  {no:7, time:"15:25", end:"15:35", venue:"第一グラウンド", sport:"男子サッカー", league:"D", home:"1-5", away:"2-1"},
+  {no:7, time:"15:25", end:"15:35", venue:"第二グラウンド", sport:"女子サッカー", league:"B", home:"1-1", away:"3-2"},
+  {no:7, time:"15:25", end:"15:35", venue:"下テニスコート", sport:"男子バレー", league:"C", home:"1-2", away:"1-6"},
+  {no:7, time:"15:25", end:"15:35", venue:"上テニスコート", sport:"女子バレー", league:"B", home:"3-3", away:"3-5"},
+  {no:8, time:"15:45", end:"15:55", venue:"第二体育館A", sport:"男子バスケ", league:"B", home:"2-5", away:"3-2"},
+  {no:8, time:"15:45", end:"15:55", venue:"第二体育館B", sport:"女子バスケ", league:"C", home:"2-4", away:"3-5"},
+  {no:8, time:"15:45", end:"15:55", venue:"第一グラウンド", sport:"男子サッカー", league:"E", home:"1-2", away:"3-6"},
+  {no:8, time:"15:45", end:"15:55", venue:"第二グラウンド", sport:"女子サッカー", league:"A", home:"1-6", away:"2-3"},
+  {no:8, time:"15:45", end:"15:55", venue:"下テニスコート", sport:"男子バレー", league:"A", home:"2-6", away:"3-4"},
+  {no:8, time:"15:45", end:"15:55", venue:"上テニスコート", sport:"女子バレー", league:"C", home:"1-1", away:"1-5"},
+  {no:9, time:"16:05", end:"16:15", venue:"第二体育館A", sport:"男子バスケ", league:"C", home:"1-6", away:"2-1"},
+  {no:9, time:"16:05", end:"16:15", venue:"第二体育館B", sport:"女子バスケ", league:"D", home:"1-1", away:"2-5"},
+  {no:9, time:"16:05", end:"16:15", venue:"第一グラウンド", sport:"男子サッカー", league:"F", home:"1-3", away:"2-2"},
+  {no:9, time:"16:05", end:"16:15", venue:"第二グラウンド", sport:"女子サッカー", league:"B", home:"3-2", away:"3-5"},
+  {no:9, time:"16:05", end:"16:15", venue:"下テニスコート", sport:"男子バレー", league:"D", home:"1-4", away:"3-6"},
+  {no:9, time:"16:05", end:"16:15", venue:"上テニスコート", sport:"女子バレー", league:"F", home:"1-2", away:"2-4"},
+  // === 2日目 ===
+  {no:10, time:"9:20", end:"9:30", venue:"第二体育館A", sport:"男子バスケ", league:"B", home:"2-5", away:"3-6"},
+  {no:10, time:"9:20", end:"9:30", venue:"第二体育館B", sport:"女子バスケ", league:"F", home:"2-2", away:"2-6"},
+  {no:10, time:"9:20", end:"9:30", venue:"第一グラウンド", sport:"男子サッカー", league:"C", home:"2-4", away:"3-5"},
+  {no:10, time:"9:20", end:"9:30", venue:"第二グラウンド", sport:"女子サッカー", league:"C", home:"1-4", away:"1-5"},
+  {no:10, time:"9:20", end:"9:30", venue:"下テニスコート", sport:"男子バレー", league:"F", home:"2-3", away:"3-1"},
+  {no:10, time:"9:20", end:"9:30", venue:"上テニスコート", sport:"女子バレー", league:"B", home:"2-2", away:"3-3"},
+  {no:11, time:"9:40", end:"9:50", venue:"第二体育館A", sport:"男子バスケ", league:"D", home:"2-6", away:"3-4"},
+  {no:11, time:"9:40", end:"9:50", venue:"第二体育館B", sport:"女子バスケ", league:"C", home:"2-4", away:"3-6"},
+  {no:11, time:"9:40", end:"9:50", venue:"第一グラウンド", sport:"男子サッカー", league:"F", home:"2-2", away:"3-1"},
+  {no:11, time:"9:40", end:"9:50", venue:"第二グラウンド", sport:"女子サッカー", league:"B", home:"1-1", away:"3-5"},
+  {no:11, time:"9:40", end:"9:50", venue:"下テニスコート", sport:"男子バレー", league:"D", home:"1-4", away:"1-5"},
+  {no:11, time:"9:40", end:"9:50", venue:"上テニスコート", sport:"女子バレー", league:"E", home:"1-3", away:"2-5"},
+  {no:12, time:"10:00", end:"10:10", venue:"第二体育館A", sport:"男子バスケ", league:"F", home:"3-3", away:"3-5"},
+  {no:12, time:"10:00", end:"10:10", venue:"第二体育館B", sport:"女子バスケ", league:"D", home:"1-1", away:"3-2"},
+  {no:12, time:"10:00", end:"10:10", venue:"第一グラウンド", sport:"男子サッカー", league:"A", home:"1-4", away:"2-5"},
+  {no:12, time:"10:00", end:"10:10", venue:"第二グラウンド", sport:"女子サッカー", league:"D", home:"1-2", away:"2-6"},
+  {no:12, time:"10:00", end:"10:10", venue:"下テニスコート", sport:"男子バレー", league:"A", home:"2-1", away:"3-4"},
+  {no:12, time:"10:00", end:"10:10", venue:"上テニスコート", sport:"女子バレー", league:"F", home:"2-4", away:"3-1"},
+  {no:13, time:"10:20", end:"10:30", venue:"第二体育館A", sport:"男子バスケ", league:"C", home:"1-2", away:"2-1"},
+  {no:13, time:"10:20", end:"10:30", venue:"第二体育館B", sport:"女子バスケ", league:"B", home:"1-5", away:"3-4"},
+  {no:13, time:"10:20", end:"10:30", venue:"第一グラウンド", sport:"男子サッカー", league:"B", home:"2-3", away:"2-6"},
+  {no:13, time:"10:20", end:"10:30", venue:"第二グラウンド", sport:"女子サッカー", league:"A", home:"1-6", away:"3-6"},
+  {no:13, time:"10:20", end:"10:30", venue:"下テニスコート", sport:"男子バレー", league:"E", home:"1-1", away:"3-2"},
+  {no:13, time:"10:20", end:"10:30", venue:"上テニスコート", sport:"女子バレー", league:"B", home:"2-2", away:"3-5"},
+  {no:14, time:"10:40", end:"10:50", venue:"第二体育館A", sport:"男子バスケ", league:"E", home:"2-3", away:"2-4"},
+  {no:14, time:"10:40", end:"10:50", venue:"第二体育館B", sport:"女子バスケ", league:"A", home:"1-3", away:"3-1"},
+  {no:14, time:"10:40", end:"10:50", venue:"第一グラウンド", sport:"男子サッカー", league:"D", home:"1-5", away:"3-4"},
+  {no:14, time:"10:40", end:"10:50", venue:"第二グラウンド", sport:"女子サッカー", league:"C", home:"1-4", away:"2-5"},
+  {no:14, time:"10:40", end:"10:50", venue:"下テニスコート", sport:"男子バレー", league:"C", home:"1-6", away:"3-3"},
+  {no:14, time:"10:40", end:"10:50", venue:"上テニスコート", sport:"女子バレー", league:"A", home:"2-1", away:"3-2"},
+  {no:15, time:"11:00", end:"11:10", venue:"第二体育館A", sport:"男子バスケ", league:"A", home:"1-3", away:"3-1"},
+  {no:15, time:"11:00", end:"11:10", venue:"第二体育館B", sport:"女子バスケ", league:"E", home:"1-6", away:"2-1"},
+  {no:15, time:"11:00", end:"11:10", venue:"第一グラウンド", sport:"男子サッカー", league:"B", home:"1-1", away:"2-6"},
+  {no:15, time:"11:00", end:"11:10", venue:"第二グラウンド", sport:"女子サッカー", league:"E", home:"3-3", away:"3-4"},
+  {no:15, time:"11:00", end:"11:10", venue:"下テニスコート", sport:"男子バレー", league:"E", home:"2-4", away:"3-2"},
+  {no:15, time:"11:00", end:"11:10", venue:"上テニスコート", sport:"女子バレー", league:"D", home:"2-3", away:"3-6"},
+  {no:16, time:"11:20", end:"11:30", venue:"第二体育館A", sport:"男子バスケ", league:"E", home:"1-1", away:"2-4"},
+  {no:16, time:"11:20", end:"11:30", venue:"第二体育館B", sport:"女子バスケ", league:"A", home:"1-3", away:"2-3"},
+  {no:16, time:"11:20", end:"11:30", venue:"第一グラウンド", sport:"男子サッカー", league:"A", home:"1-6", away:"2-5"},
+  {no:16, time:"11:20", end:"11:30", venue:"第二グラウンド", sport:"女子サッカー", league:"F", home:"2-1", away:"2-2"},
+  {no:16, time:"11:20", end:"11:30", venue:"下テニスコート", sport:"男子バレー", league:"D", home:"1-5", away:"3-6"},
+  {no:16, time:"11:20", end:"11:30", venue:"上テニスコート", sport:"女子バレー", league:"F", home:"1-2", away:"3-1"},
+  {no:17, time:"11:40", end:"11:50", venue:"第二体育館A", sport:"男子バスケ", league:"F", home:"1-4", away:"3-5"},
+  {no:17, time:"11:40", end:"11:50", venue:"第二体育館B", sport:"女子バスケ", league:"D", home:"2-5", away:"3-2"},
+  {no:17, time:"11:40", end:"11:50", venue:"第一グラウンド", sport:"男子サッカー", league:"D", home:"2-1", away:"3-4"},
+  {no:17, time:"11:40", end:"11:50", venue:"第二グラウンド", sport:"女子サッカー", league:"D", home:"1-3", away:"2-6"},
+  {no:17, time:"11:40", end:"11:50", venue:"下テニスコート", sport:"男子バレー", league:"C", home:"1-2", away:"3-3"},
+  {no:17, time:"11:40", end:"11:50", venue:"上テニスコート", sport:"女子バレー", league:"D", home:"1-6", away:"3-6"},
+  {no:18, time:"12:00", end:"12:10", venue:"第二体育館A", sport:"男子バスケ", league:"A", home:"2-2", away:"3-1"},
+  {no:18, time:"12:00", end:"12:10", venue:"第二体育館B", sport:"女子バスケ", league:"F", home:"1-2", away:"2-6"},
+  {no:18, time:"12:00", end:"12:10", venue:"第一グラウンド", sport:"男子サッカー", league:"E", home:"3-2", away:"3-6"},
+  {no:18, time:"12:00", end:"12:10", venue:"第二グラウンド", sport:"女子サッカー", league:"E", home:"2-4", away:"3-4"},
+  {no:18, time:"12:00", end:"12:10", venue:"下テニスコート", sport:"男子バレー", league:"B", home:"1-3", away:"3-5"},
+  {no:18, time:"12:00", end:"12:10", venue:"上テニスコート", sport:"女子バレー", league:"E", home:"1-4", away:"2-5"},
+];
+SCHEDULE.forEach((g,i)=>{ g.id = `g${i}`; });
+
+// ===== URLハッシュ解析 =====
+function decodeHashData(){
+  const hash = location.hash.slice(1); // # を除く
+  if(!hash) return null;
+  try{
+    // Base64 URL-safe → Uint8Array → pako解凍 → JSON
+    const b64 = hash.replace(/-/g, '+').replace(/_/g, '/');
+    const binary = atob(b64);
+    const bytes = new Uint8Array(binary.length);
+    for(let i=0;i<binary.length;i++) bytes[i] = binary.charCodeAt(i);
+    const json = pako.inflate(bytes, {to:'string'});
+    return JSON.parse(json);
+  }catch(e){
+    console.error('Decode failed:', e);
+    return null;
+  }
+}
+
+function toMin(t){ const [h,m]=t.split(':').map(Number); return h*60+m; }
+function fromMin(min){
+  const h = Math.floor(min/60), m = min%60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+}
+
+function render(snapshot){
+  if(!snapshot){
+    document.getElementById('container').innerHTML = `
+      <div class="error">
+        <h2>⚠ データが読み込めません</h2>
+        <p>このURLには有効なデータが含まれていないか、URLが切れています。<br>本部から再度速報URLを取得してください。</p>
+      </div>`;
+    return;
+  }
+  const results = snapshot.results || {};
+  const delays = snapshot.delays || {};
+  const generatedAt = snapshot.ts ? new Date(snapshot.ts) : new Date();
+  const dateStr = `${generatedAt.getFullYear()}/${generatedAt.getMonth()+1}/${generatedAt.getDate()} ${String(generatedAt.getHours()).padStart(2,'0')}:${String(generatedAt.getMinutes()).padStart(2,'0')}`;
+  document.title = `体育祭 速報 - ${dateStr}`;
+
+  function getDelay(sport){ return delays[sport] || 0; }
+  function effStartMin(g){ return toMin(g.time) + getDelay(g.sport); }
+  function effEndMin(g){ return toMin(g.end) + getDelay(g.sport); }
+  function effStart(g){ return fromMin(effStartMin(g)); }
+  function effEnd(g){ return fromMin(effEndMin(g)); }
+
+  // スナップショット時刻基準で判定
+  const nowMin = generatedAt.getHours()*60 + generatedAt.getMinutes();
+  function gameStatus(g){
+    const r = results[g.id];
+    if(r && r.status === 'done') return 'done';
+    if(nowMin >= effStartMin(g) && nowMin <= effEndMin(g)+2) return 'live';
+    if(nowMin > effEndMin(g)) return 'done-auto';
+    return 'pending';
+  }
+
+  // LIVE中試合
+  const liveGames = SCHEDULE.filter(g=>nowMin>=effStartMin(g)&&nowMin<=effEndMin(g)+2);
+  // 次の試合
+  const liveGameIds = new Set(liveGames.map(g=>g.id));
+  let nextGames = SCHEDULE.filter(g=>!liveGameIds.has(g.id)&&nowMin<effStartMin(g));
+  const nextBySport = {};
+  nextGames.forEach(g=>{
+    if(!nextBySport[g.sport]||effStartMin(g)<effStartMin(nextBySport[g.sport])){
+      nextBySport[g.sport]=g;
+    }
+  });
+  nextGames = Object.values(nextBySport).sort((a,b)=>effStartMin(a)-effStartMin(b));
+
+  function gameCell(g){
+    const r = results[g.id];
+    if(!r||r.homeScore==null){
+      const st = gameStatus(g);
+      const label = st==='live'?'LIVE': (nowMin > effEndMin(g) ? '未入力' : '');
+      return `<div class="g-cell pending">
+        <div class="g-teams">${g.home} <span class="vs">vs</span> ${g.away}</div>
+        <div class="g-status">${label||'-'}</div>
+      </div>`;
+    }
+    let cls = '';
+    if(r.homeScore > r.awayScore) cls = 'home-win';
+    else if(r.homeScore < r.awayScore) cls = 'away-win';
+    return `<div class="g-cell done ${cls}">
+      <div class="g-teams">${g.home} <span class="vs">vs</span> ${g.away}</div>
+      <div class="g-score">${r.homeScore} - ${r.awayScore}</div>
+    </div>`;
+  }
+
+  function buildStandingsFor(sport){
+    const sportGames = SCHEDULE.filter(g=>g.sport===sport);
+    const leagues = [...new Set(sportGames.map(g=>g.league))].sort();
+    return leagues.map(L=>{
+      const lg = sportGames.filter(g=>g.league===L);
+      const teams = [...new Set(lg.flatMap(g=>[g.home,g.away]))];
+      const stat = {};
+      teams.forEach(t=>{ stat[t]={team:t,gp:0,w:0,l:0,d:0,gf:0,ga:0,pts:0}; });
+      lg.forEach(g=>{
+        const r = results[g.id];
+        if(!r||r.status!=='done'||r.homeScore==null) return;
+        stat[g.home].gp++; stat[g.away].gp++;
+        stat[g.home].gf+=r.homeScore; stat[g.home].ga+=r.awayScore;
+        stat[g.away].gf+=r.awayScore; stat[g.away].ga+=r.homeScore;
+        if(r.homeScore>r.awayScore){stat[g.home].w++;stat[g.away].l++;stat[g.home].pts+=3;}
+        else if(r.homeScore<r.awayScore){stat[g.away].w++;stat[g.home].l++;stat[g.away].pts+=3;}
+        else{stat[g.home].d++;stat[g.away].d++;stat[g.home].pts+=1;stat[g.away].pts+=1;}
+      });
+      const rows = Object.values(stat).sort((a,b)=>{
+        if(b.pts!==a.pts) return b.pts-a.pts;
+        const aDiff=a.gf-a.ga, bDiff=b.gf-b.ga;
+        if(bDiff!==aDiff) return bDiff-aDiff;
+        return b.gf-a.gf;
+      });
+      const ranks = [];
+      rows.forEach((r,i)=>{
+        if(i===0) ranks.push(1);
+        else{
+          const prev = rows[i-1];
+          const isTied = (r.pts===prev.pts && (r.gf-r.ga)===(prev.gf-prev.ga) && r.gf===prev.gf);
+          ranks.push(isTied ? ranks[i-1] : i+1);
+        }
+      });
+      return `<div class="st-card">
+        <div class="st-head">${L}リーグ <span>${lg.filter(g=>results[g.id]&&results[g.id].status==='done').length}/${lg.length}試合</span></div>
+        <table class="st-table">
+          <thead><tr><th>順</th><th>クラス</th><th>勝</th><th>分</th><th>負</th><th>得</th><th>失</th><th>差</th><th>点</th></tr></thead>
+          <tbody>${rows.map((r,i)=>`<tr class="${ranks[i]===1?'r1':''}"><td>${ranks[i]}</td><td>${r.team}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td><td>${r.gf}</td><td>${r.ga}</td><td>${r.gf-r.ga>0?'+':''}${r.gf-r.ga}</td><td><strong>${r.pts}</strong></td></tr>`).join('')}</tbody>
+        </table>
+      </div>`;
+    }).join('');
+  }
+
+  const sports = ['男子バスケ','女子バスケ','男子サッカー','女子サッカー','男子バレー','女子バレー'];
+  const standingsHtml = sports.map(s=>`<section class="sp-block"><h2>${s}</h2><div class="st-grid">${buildStandingsFor(s)}</div></section>`).join('');
+
+  const total = SCHEDULE.length;
+  const done = Object.values(results).filter(r=>r.status==='done').length;
+
+  const delayedSports = Object.entries(delays).filter(([s,d])=>d>0);
+  const delayHtml = delayedSports.length > 0 ? `
+    <div class="delay-info">
+      <strong>⚠ 遅延発生中：</strong>
+      ${delayedSports.map(([s,d])=>`<span>${s} +${d}分</span>`).join('')}
+    </div>` : '';
+
+  const slots = [...new Set(SCHEDULE.map(g=>g.no))].sort((a,b)=>a-b);
+  const scheduleHtml = slots.map(n=>{
+    const games = SCHEDULE.filter(g=>g.no===n);
+    const time = games[0].time + '〜' + games[0].end;
+    const statuses = games.map(g=>gameStatus(g));
+    let slotStatus = 'pending';
+    if(statuses.some(s=>s==='live')) slotStatus='live';
+    else if(statuses.every(s=>s==='done'||s==='done-auto')) slotStatus='done';
+    return `<div class="slot ${slotStatus}">
+      <div class="slot-head"><span class="slot-no">試合${n}</span><span class="slot-time">${time}</span></div>
+      <div class="slot-games">
+        ${games.map(g=>{
+          const r = results[g.id];
+          const sc = (r&&r.homeScore!=null) ? `${r.homeScore}-${r.awayScore}` : '';
+          return `<div class="sg-row">
+            <span class="sg-sport">${g.sport.replace('男子','男').replace('女子','女')}${g.league}</span>
+            <span class="sg-match">${g.home} vs ${g.away}</span>
+            <span class="sg-score">${sc}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('container').innerHTML = `
+    <div class="report-header">
+      <h1>🏃 体育祭 速報</h1>
+      <div class="ts">スナップショット時刻：${dateStr}</div>
+      <div class="progress">${done} / ${total} 試合完了</div>
+    </div>
+    <div class="viewer-note"><strong>📋 この資料について：</strong>本部システムから書き出した速報のスナップショットです。最新の状況を見るには、本部から新しい速報URLを受け取ってください。</div>
+    ${delayHtml}
+    ${liveGames.length>0 ? `<section class="live-block"><h2>● 進行中 ${liveGames.length}試合</h2><div class="g-grid">${liveGames.map(gameCell).join('')}</div></section>` : ''}
+    ${nextGames.length>0 ? `<section class="next-block"><h2>次の試合 ${nextGames.length}件</h2><div class="g-grid">${nextGames.map(gameCell).join('')}</div></section>` : ''}
+    <section><h2>順位表</h2>${standingsHtml}</section>
+    <section><h2>試合スケジュール</h2>${scheduleHtml}</section>
+    <div class="footer">スナップショット：${dateStr} / 体育祭速報ビューア</div>
+  `;
+}
+
+// 初期化
+window.addEventListener('load', ()=>{
+  const snapshot = decodeHashData();
+  render(snapshot);
+});
+window.addEventListener('hashchange', ()=>{
+  const snapshot = decodeHashData();
+  render(snapshot);
+});
+</script>
+</body>
+</html>
