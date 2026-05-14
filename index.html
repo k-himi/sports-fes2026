@@ -243,6 +243,40 @@ section{scroll-margin-top:1rem}
 .cv-total-stats .w{color:#2a9d8f}
 .cv-total-stats .l{color:#888}
 
+/* クラス別戦績：トーナメント区切りと行 */
+.cv-t-divider{
+  padding:.3rem .5rem;
+  font-size:.7rem;
+  font-weight:700;
+  color:#e63946;
+  background:linear-gradient(to right, #fff4e6, transparent);
+  border-top:1.5px dashed #e63946;
+  border-bottom:1px solid #f4d4d8;
+  margin-top:.15rem;
+  letter-spacing:.05em;
+}
+.cv-t-row{
+  background:linear-gradient(to right, rgba(230,57,70,.04), transparent);
+}
+.cv-t-row.win{background:linear-gradient(to right, rgba(42,157,143,.08), transparent)}
+.cv-t-row.loss{background:linear-gradient(to right, rgba(136,136,136,.06), transparent)}
+.cv-t-row .cv-match-no{
+  color:#e63946;
+  font-weight:700;
+  font-family:inherit;
+  font-size:.72rem;
+}
+.cv-t-note{
+  grid-column:1 / -1;
+  margin-top:.2rem;
+  font-size:.7rem;
+  color:#666;
+  font-style:italic;
+  background:#f4f1ea;
+  padding:.15rem .4rem;
+  border-radius:2px;
+}
+
 /* === ビューア トーナメント表 === */
 .vt-selectors{
   margin-bottom:.8rem;
@@ -1008,7 +1042,8 @@ function render(snapshot){
 
   // === クラス別ビューを構築 ===
   function buildClassView(selectedTeam){
-    const allTeams = [...new Set(SCHEDULE.flatMap(g=>[g.home, g.away]))].sort((a,b)=>{
+    // 予選試合のhome/awayから実クラスを取得（トーナメントのダミー"梅T"などは除外）
+    const allTeams = [...new Set(SCHEDULE.filter(g=>!g.bracket).flatMap(g=>[g.home, g.away]))].sort((a,b)=>{
       const [ay, ac] = a.split('-').map(Number);
       const [by, bc] = b.split('-').map(Number);
       if(ay !== by) return ay - by;
@@ -1016,9 +1051,120 @@ function render(snapshot){
     });
     if(!selectedTeam || !allTeams.includes(selectedTeam)) selectedTeam = allTeams[0];
     const team = selectedTeam;
+    
+    // ヘルパー：リーグ順位（予選のみ）
+    function getLeagueRanking(sport, league){
+      const lg = SCHEDULE.filter(g=>g.sport===sport && g.league===league && !g.bracket);
+      const teams = [...new Set(lg.flatMap(g=>[g.home, g.away]))];
+      const stat = {};
+      teams.forEach(t=>{ stat[t] = {team:t,pts:0,gf:0,ga:0}; });
+      lg.forEach(g=>{
+        const r = results[g.id];
+        if(!r || r.status !== 'done' || r.homeScore == null) return;
+        stat[g.home].gf += r.homeScore; stat[g.home].ga += r.awayScore;
+        stat[g.away].gf += r.awayScore; stat[g.away].ga += r.homeScore;
+        if(r.homeScore > r.awayScore){ stat[g.home].pts += 3; }
+        else if(r.homeScore < r.awayScore){ stat[g.away].pts += 3; }
+        else{ stat[g.home].pts += 1; stat[g.away].pts += 1; }
+      });
+      return Object.values(stat).sort((a,b)=>{
+        if(b.pts !== a.pts) return b.pts - a.pts;
+        const aDiff = a.gf - a.ga, bDiff = b.gf - b.ga;
+        if(bDiff !== aDiff) return bDiff - aDiff;
+        return b.gf - a.gf;
+      });
+    }
+    function getSeeds(sport, grade){
+      const idx = {'松':0, '竹':1, '梅':2}[grade];
+      return ['A','B','C','D','E','F'].map(L=>{
+        const sorted = getLeagueRanking(sport, L);
+        return sorted[idx] ? sorted[idx].team : null;
+      });
+    }
+    function getTMatch(sport, grade, matchKey){
+      const g = SCHEDULE.find(g=>g.bracket && g.sport===sport && g.grade===grade && g.matchKey===matchKey);
+      if(!g) return null;
+      return { game: g, result: results[g.id] || null };
+    }
+    function tWinner(r, home, away){
+      if(!r || r.status !== 'done' || r.homeScore == null) return null;
+      if(r.winner === 'home') return home;
+      if(r.winner === 'away') return away;
+      if(r.homeScore === r.awayScore) return null;
+      return r.homeScore > r.awayScore ? home : away;
+    }
+    function tLoser(r, home, away){
+      if(!r || r.status !== 'done' || r.homeScore == null) return null;
+      if(r.winner === 'home') return away;
+      if(r.winner === 'away') return home;
+      if(r.homeScore === r.awayScore) return null;
+      return r.homeScore > r.awayScore ? away : home;
+    }
+    // 指定クラスが参加した全トーナメント試合を抽出
+    // [{ sport, grade, matchKey, home, away, result, label, no }]
+    function getClassTournamentMatches(team){
+      const matches = [];
+      const labelMap = {
+        r1a: '1回戦', r1b: '1回戦', sf1: '準決勝', sf2: '準決勝',
+        final: '決勝', third: '3位決定戦', fifth: '5位決定戦'
+      };
+      sports.forEach(sport=>{
+        ['松','竹','梅'].forEach(grade=>{
+          const seeds = getSeeds(sport, grade);
+          const [tA, tB, tC, tD, tE, tF] = seeds;
+          // 各試合の対戦カードを解決
+          const r1a = getTMatch(sport, grade, 'r1a');
+          const r1b = getTMatch(sport, grade, 'r1b');
+          const sf1 = getTMatch(sport, grade, 'sf1');
+          const sf2 = getTMatch(sport, grade, 'sf2');
+          const fin = getTMatch(sport, grade, 'final');
+          const th  = getTMatch(sport, grade, 'third');
+          const fif = getTMatch(sport, grade, 'fifth');
+          const r1aW = tWinner(r1a?.result, tA, tB);
+          const r1aL = tLoser(r1a?.result, tA, tB);
+          const r1bW = tWinner(r1b?.result, tE, tF);
+          const r1bL = tLoser(r1b?.result, tE, tF);
+          const sf1W = tWinner(sf1?.result, r1aW, tC);
+          const sf1L = tLoser(sf1?.result, r1aW, tC);
+          const sf2W = tWinner(sf2?.result, tD, r1bW);
+          const sf2L = tLoser(sf2?.result, tD, r1bW);
+          
+          const cards = [
+            { mk:'r1a', home: tA, away: tB, result: r1a?.result, no: r1a?.game?.no },
+            { mk:'r1b', home: tE, away: tF, result: r1b?.result, no: r1b?.game?.no },
+            { mk:'sf1', home: r1aW, away: tC, result: sf1?.result, no: sf1?.game?.no },
+            { mk:'sf2', home: tD, away: r1bW, result: sf2?.result, no: sf2?.game?.no },
+            { mk:'final', home: sf1W, away: sf2W, result: fin?.result, no: fin?.game?.no },
+            { mk:'third', home: sf1L, away: sf2L, result: th?.result, no: th?.game?.no },
+            { mk:'fifth', home: r1aL, away: r1bL, result: fif?.result, no: fif?.game?.no },
+          ];
+          cards.forEach(c=>{
+            if(c.home === team || c.away === team){
+              matches.push({
+                sport, grade,
+                matchKey: c.mk,
+                label: `${grade}${labelMap[c.mk]}`,
+                home: c.home, away: c.away,
+                result: c.result,
+                no: c.no,
+              });
+            }
+          });
+        });
+      });
+      return matches;
+    }
+    const allClassTMatches = getClassTournamentMatches(team);
+    // 競技別にまとめる
+    const tMatchesBySport = {};
+    allClassTMatches.forEach(m=>{
+      if(!tMatchesBySport[m.sport]) tMatchesBySport[m.sport] = [];
+      tMatchesBySport[m.sport].push(m);
+    });
+    
     let totalW=0, totalL=0, totalD=0, totalGF=0, totalGA=0, totalGP=0;
     const sportBlocks = sports.map(sport=>{
-      const sportGames = SCHEDULE.filter(g=>g.sport===sport && (g.home===team || g.away===team));
+      const sportGames = SCHEDULE.filter(g=>g.sport===sport && !g.bracket && (g.home===team || g.away===team));
       if(sportGames.length === 0){
         return `<div class="cv-sport-block">
           <div class="cv-sport-row">
@@ -1043,25 +1189,7 @@ function render(snapshot){
       });
       totalW += w; totalL += l; totalD += d; totalGF += gf; totalGA += ga; totalGP += done;
       // リーグ内順位
-      const leagueGames = SCHEDULE.filter(g=>g.sport===sport && g.league===league);
-      const teams2 = [...new Set(leagueGames.flatMap(g=>[g.home, g.away]))];
-      const stat = {};
-      teams2.forEach(t=>{ stat[t] = {team:t,pts:0,gf:0,ga:0}; });
-      leagueGames.forEach(g=>{
-        const r = results[g.id];
-        if(!r || r.status !== 'done' || r.homeScore == null) return;
-        stat[g.home].gf += r.homeScore; stat[g.home].ga += r.awayScore;
-        stat[g.away].gf += r.awayScore; stat[g.away].ga += r.homeScore;
-        if(r.homeScore > r.awayScore){ stat[g.home].pts += 3; }
-        else if(r.homeScore < r.awayScore){ stat[g.away].pts += 3; }
-        else{ stat[g.home].pts += 1; stat[g.away].pts += 1; }
-      });
-      const sorted = Object.values(stat).sort((a,b)=>{
-        if(b.pts !== a.pts) return b.pts - a.pts;
-        const aDiff = a.gf - a.ga, bDiff = b.gf - b.ga;
-        if(bDiff !== aDiff) return bDiff - aDiff;
-        return b.gf - a.gf;
-      });
+      const sorted = getLeagueRanking(sport, league);
       const ranks = [];
       sorted.forEach((r, i)=>{
         if(i === 0) ranks.push(1);
@@ -1077,6 +1205,7 @@ function render(snapshot){
       const diffStr = diff > 0 ? `+${diff}` : `${diff}`;
       const rankClass = myRank === 1 ? 'rank-1' : '';
       const rankText = (done === sportGames.length && myRank) ? `${myRank}位` : (done > 0 ? `暫定${myRank}位` : '未確定');
+      // 予選試合行
       const matchRowsHtml = sportGames.map(g=>{
         const r = results[g.id];
         const isHome = g.home === team;
@@ -1101,6 +1230,46 @@ function render(snapshot){
           <span class="cv-match-result ${resultClass}">${resultLabel}</span>
         </div>`;
       }).join('');
+      // トーナメント試合行
+      const tMatches = tMatchesBySport[sport] || [];
+      let tournamentHtml = '';
+      if(tMatches.length > 0){
+        const tRows = tMatches.map(m=>{
+          const isHome = m.home === team;
+          const opponent = isHome ? m.away : m.home;
+          const r = m.result;
+          if(!r || r.status !== 'done' || r.homeScore == null){
+            return `<div class="cv-match-row pending cv-t-row">
+              <span class="cv-match-no">${m.label}</span>
+              <span class="cv-match-opp">vs ${opponent||'未定'}</span>
+              <span class="cv-match-score">未実施</span>
+            </div>`;
+          }
+          // 勝者判定（winnerフィールド優先）
+          let winSide = null;
+          if(r.winner === 'home') winSide = 'home';
+          else if(r.winner === 'away') winSide = 'away';
+          else if(r.homeScore > r.awayScore) winSide = 'home';
+          else if(r.awayScore > r.homeScore) winSide = 'away';
+          const myWin = (isHome && winSide === 'home') || (!isHome && winSide === 'away');
+          const isDraw = winSide === null;
+          const myScore = isHome ? r.homeScore : r.awayScore;
+          const oppScore = isHome ? r.awayScore : r.homeScore;
+          let resultLabel, resultClass;
+          if(isDraw){ resultLabel = '分'; resultClass = 'draw'; }
+          else if(myWin){ resultLabel = '勝'; resultClass = 'win'; }
+          else{ resultLabel = '負'; resultClass = 'loss'; }
+          const noteHtml = r.note ? `<div class="cv-t-note">${r.note}</div>` : '';
+          return `<div class="cv-match-row ${resultClass} cv-t-row">
+            <span class="cv-match-no">${m.label}</span>
+            <span class="cv-match-opp">vs ${opponent||'未定'}</span>
+            <span class="cv-match-score">${myScore} - ${oppScore}</span>
+            <span class="cv-match-result ${resultClass}">${resultLabel}</span>
+            ${noteHtml}
+          </div>`;
+        }).join('');
+        tournamentHtml = `<div class="cv-t-divider">トーナメント</div>${tRows}`;
+      }
       return `<div class="cv-sport-block">
         <div class="cv-sport-row">
           <div class="cv-sport-name">${sport}<span class="cv-league-tag">${league}リーグ</span></div>
@@ -1110,7 +1279,7 @@ function render(snapshot){
             <span class="cv-rank ${rankClass}">${rankText}</span>
           </div>
         </div>
-        <div class="cv-match-list">${matchRowsHtml}</div>
+        <div class="cv-match-list">${matchRowsHtml}${tournamentHtml}</div>
       </div>`;
     }).join('');
     const totalDiff = totalGF - totalGA;
