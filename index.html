@@ -242,6 +242,352 @@ section{scroll-margin-top:1rem}
 }
 .cv-total-stats .w{color:#2a9d8f}
 .cv-total-stats .l{color:#888}
+
+/* === ビューア トーナメント表 === */
+.vt-selectors{
+  margin-bottom:.8rem;
+  background:white;
+  border:1.5px solid #0a0a0a;
+  border-radius:6px;
+  padding:.5rem;
+}
+.vt-sport-row{
+  display:flex;flex-wrap:wrap;gap:.3rem;
+  margin-bottom:.5rem;
+}
+.vt-sport-btn{
+  background:transparent;
+  border:1.5px solid #ccc;
+  border-radius:4px;
+  padding:.35rem .5rem;
+  font-family:inherit;
+  font-weight:700;
+  font-size:.75rem;
+  cursor:pointer;
+  color:#0a64f4;
+}
+.vt-sport-btn.active{background:#0a0a0a;color:white;border-color:#0a0a0a}
+.vt-grade-row{
+  display:flex;gap:.4rem;
+}
+.vt-grade-btn{
+  flex:1;
+  background:transparent;
+  border:1.5px solid #ccc;
+  border-radius:4px;
+  padding:.4rem .5rem;
+  font-family:inherit;
+  font-weight:700;
+  font-size:.78rem;
+  cursor:pointer;
+  color:#444;
+}
+.vt-grade-btn.active{background:#0a0a0a;color:white;border-color:#0a0a0a}
+.vt-bracket{
+  background:white;
+  border:2px solid #0a0a0a;
+  border-radius:6px;
+  padding:.8rem;
+  box-shadow:3px 3px 0 #0a0a0a;
+  margin-bottom:.8rem;
+}
+.vt-title{
+  font-weight:900;
+  font-size:1rem;
+  margin-bottom:.6rem;
+  padding-bottom:.4rem;
+  border-bottom:2px solid #0a0a0a;
+}
+.vt-svg-wrap{
+  width:100%;
+  overflow-x:auto;
+}
+.vt-svg{width:100%;height:auto;display:block;min-width:380px}
+.vt-svg .vt-seed{
+  font-family:'JetBrains Mono', monospace;
+  font-weight:700;
+  font-size:13px;
+  fill:#0a0a0a;
+}
+.vt-svg .vt-seed.tbd{fill:#bbb;font-weight:400}
+.vt-svg .vt-seed-label{
+  font-family:'JetBrains Mono', monospace;
+  font-weight:700;
+  font-size:10px;
+  fill:#999;
+}
+.vt-svg foreignObject .vt-mbox{
+  box-sizing:border-box;
+  height:100%;
+  width:100%;
+  background:white;
+  border:1.5px solid #0a0a0a;
+  border-radius:3px;
+  padding:2px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-evenly;
+}
+.vt-svg foreignObject .vt-mbox.done{background:#fff}
+.vt-svg foreignObject .vt-team{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1px 3px;
+  font-family:'JetBrains Mono',monospace;
+  font-weight:700;
+  font-size:10px;
+}
+.vt-svg foreignObject .vt-team.winner{
+  background:#fff4e6;
+  border:1.5px solid #e63946;
+  border-radius:3px;
+  font-weight:900;
+}
+.vt-svg foreignObject .vt-team.winner .vt-score{
+  color:#e63946;
+  font-weight:900;
+}
+.vt-svg foreignObject .vt-team.tbd{color:#bbb;font-weight:400}
+.vt-svg foreignObject .vt-div{height:1px;background:#ddd;margin:1px 0}
+.vt-svg foreignObject .vt-note{
+  font-size:8px;
+  color:#666;
+  font-style:italic;
+  text-align:center;
+  padding:1px 2px;
+  background:#f4f1ea;
+  border-radius:2px;
+  margin-top:1px;
+  font-weight:400;
+  line-height:1.1;
+}
+.vt-svg foreignObject .vt-score{
+  font-size:11px;
+  color:#e63946;
+}
+.vt-champion{
+  margin-top:.6rem;
+  background:linear-gradient(135deg,#f4a261,#e63946);
+  color:white;
+  font-weight:700;
+  border-radius:4px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.95rem;
+  padding:.5rem;
+  text-align:center;
+  letter-spacing:.05em;
+}
+.vt-extras{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.5rem;
+}
+.vt-extra-card{
+  background:white;
+  border:1.5px solid #0a0a0a;
+  border-radius:6px;
+  padding:.5rem;
+}
+.vt-extra-card h4{
+  margin:0 0 .4rem;
+  font-size:.85rem;
+  color:#e63946;
+  text-align:center;
+  border:none;
+}
+.vt-extra-card .vt-mbox{
+  background:#fafaf7;
+  border:1.5px solid #0a0a0a;
+  border-radius:3px;
+  padding:.3rem;
+}
+.vt-extra-card .vt-team{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.15rem .25rem;
+  font-family:'JetBrains Mono',monospace;
+  font-weight:700;
+  font-size:.82rem;
+}
+.vt-extra-card .vt-team.winner{
+  background:#fff4e6;
+  border:1.5px solid #e63946;
+  border-radius:3px;
+  font-weight:900;
+}
+.vt-extra-card .vt-team.winner .vt-score{color:#e63946;font-weight:900}
+.vt-extra-card .vt-team.tbd{color:#bbb;font-weight:400}
+.vt-extra-card .vt-div{height:1px;background:#ddd;margin:.1rem 0}
+.vt-extra-card .vt-note{
+  font-size:.7rem;
+  color:#666;
+  font-style:italic;
+  text-align:center;
+  padding:.2rem .35rem;
+  background:#f4f1ea;
+  border-radius:2px;
+  margin-top:.25rem;
+  font-weight:400;
+}
+.vt-extra-card .vt-score{font-size:.85rem;color:#e63946}
+.vt-rank-result{
+  text-align:center;
+  margin-top:.4rem;
+  font-weight:700;
+  font-size:.85rem;
+}
+.vt-rank-result.third{color:#e63946}
+.vt-rank-result.fifth{color:#2a9d8f}
+#sec-tournament{scroll-margin-top:1rem}
+
+/* === サブタブ === */
+.vt-subtabs{
+  display:flex;
+  gap:.3rem;
+  margin-bottom:.7rem;
+  background:white;
+  border:1.5px solid #0a0a0a;
+  border-radius:6px;
+  padding:.3rem;
+}
+.vt-subtab-btn{
+  flex:1;
+  background:transparent;
+  border:1.5px solid transparent;
+  border-radius:4px;
+  padding:.5rem .3rem;
+  font-family:inherit;
+  font-weight:700;
+  font-size:.78rem;
+  cursor:pointer;
+  color:#444;
+}
+.vt-subtab-btn.active{
+  background:#0a0a0a;
+  color:white;
+}
+
+/* === 一覧グリッド === */
+.tour-overview-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:.5rem;
+}
+.tour-card-btn{
+  background:white;
+  border:1.5px solid #0a0a0a;
+  border-radius:6px;
+  padding:.5rem .3rem;
+  cursor:pointer;
+  font-family:inherit;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.25rem;
+  text-align:center;
+}
+.tour-card-btn:active{background:#f4f1ea}
+.tc-sport{
+  font-weight:700;
+  font-size:.78rem;
+  color:#0a0a0a;
+}
+.tc-grade{
+  display:inline-block;
+  padding:.1rem .5rem;
+  border-radius:3px;
+  font-weight:900;
+  font-size:.85rem;
+}
+.tc-grade-松{background:#fff4e6;color:#e63946;border:1px solid #e63946}
+.tc-grade-竹{background:#e6f4f1;color:#2a9d8f;border:1px solid #2a9d8f}
+.tc-grade-梅{background:#f4f1ea;color:#888;border:1px solid #888}
+.tc-phase{
+  font-size:.68rem;
+  font-weight:700;
+  padding:.1rem .35rem;
+  border-radius:2px;
+  font-family:'JetBrains Mono', monospace;
+}
+.tc-pending{background:#f0ede5;color:#888}
+.tc-ready{background:#fff4e6;color:#f4a261}
+.tc-live{background:#e63946;color:white}
+.tc-champion{background:#2a9d8f;color:white}
+
+/* === タイムライン === */
+.tl-container{
+  display:flex;
+  flex-direction:column;
+  gap:.7rem;
+}
+.tl-block{
+  background:white;
+  border:1.5px solid #0a0a0a;
+  border-radius:6px;
+  overflow:hidden;
+}
+.tl-head{
+  background:#0a0a0a;
+  color:white;
+  padding:.4rem .6rem;
+  display:flex;
+  gap:.6rem;
+  align-items:center;
+  font-family:'JetBrains Mono', monospace;
+  font-size:.78rem;
+  font-weight:700;
+}
+.tl-day{
+  background:rgba(255,255,255,.18);
+  padding:.1rem .35rem;
+  border-radius:2px;
+  font-size:.7rem;
+}
+.tl-no{font-size:.85rem}
+.tl-time{margin-left:auto;font-size:.78rem;opacity:.85}
+.tl-body{
+  display:flex;
+  flex-direction:column;
+}
+.tl-row{
+  display:grid;
+  grid-template-columns:62px 70px 1fr 56px;
+  gap:.35rem;
+  align-items:center;
+  padding:.4rem .5rem;
+  font-size:.72rem;
+  border-bottom:1px dashed #e0dcd0;
+}
+.tl-row:last-child{border-bottom:none}
+.tl-row.done{background:#fafaf7}
+.tl-sport{font-weight:700;font-size:.7rem}
+.tl-round{
+  font-family:'JetBrains Mono', monospace;
+  font-size:.68rem;
+  padding:.1rem .25rem;
+  border-radius:2px;
+  font-weight:700;
+  text-align:center;
+}
+.tl-round.松{background:#fff4e6;color:#e63946}
+.tl-round.竹{background:#e6f4f1;color:#2a9d8f}
+.tl-round.梅{background:#f4f1ea;color:#888}
+.tl-card{
+  display:flex;
+  gap:.25rem;
+  align-items:center;
+  font-family:'JetBrains Mono', monospace;
+  font-weight:700;
+  font-size:.72rem;
+}
+.tl-home.win, .tl-away.win{color:#e63946;font-weight:900}
+.tl-vs{color:#999;font-size:.65rem}
+.tl-score{
+  font-family:'JetBrains Mono', monospace;
+  font-weight:900;
+  font-size:.8rem;
+  text-align:right;
+  color:#0a0a0a;
+}
+.tl-row:not(.done) .tl-score{color:#ccc;font-weight:400}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
 </head>
@@ -362,6 +708,134 @@ const SCHEDULE = [
   {no:18, time:"12:00", end:"12:10", venue:"第二グラウンド", sport:"女子サッカー", league:"E", home:"2-4", away:"3-4"},
   {no:18, time:"12:00", end:"12:10", venue:"下テニスコート", sport:"男子バレー", league:"B", home:"1-3", away:"3-5"},
   {no:18, time:"12:00", end:"12:10", venue:"上テニスコート", sport:"女子バレー", league:"E", home:"1-4", away:"2-5"},
+  // === 3日目・4日目 決勝トーナメント ===
+  {no:101, time:"9:45", end:"9:55", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"梅", matchKey:"r1a", home:"梅T", away:""},
+  {no:101, time:"9:45", end:"9:55", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"梅", matchKey:"r1a", home:"梅T", away:""},
+  {no:101, time:"9:45", end:"9:55", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"梅", matchKey:"r1a", home:"梅T", away:""},
+  {no:101, time:"9:45", end:"9:55", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"梅", matchKey:"r1a", home:"梅T", away:""},
+  {no:101, time:"9:45", end:"9:55", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"梅", matchKey:"r1a", home:"梅T", away:""},
+  {no:101, time:"9:45", end:"9:55", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"竹", matchKey:"r1a", home:"竹T", away:""},
+  {no:102, time:"10:10", end:"10:20", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"竹", matchKey:"r1a", home:"竹T", away:""},
+  {no:102, time:"10:10", end:"10:20", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"松", matchKey:"r1b", home:"松T", away:""},
+  {no:102, time:"10:10", end:"10:20", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"竹", matchKey:"r1a", home:"竹T", away:""},
+  {no:102, time:"10:10", end:"10:20", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"竹", matchKey:"r1a", home:"竹T", away:""},
+  {no:102, time:"10:10", end:"10:20", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"竹", matchKey:"r1a", home:"竹T", away:""},
+  {no:102, time:"10:10", end:"10:20", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"梅", matchKey:"r1a", home:"梅T", away:""},
+  {no:103, time:"10:35", end:"10:45", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"松", matchKey:"r1a", home:"松T", away:""},
+  {no:103, time:"10:35", end:"10:45", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"松", matchKey:"r1a", home:"松T", away:""},
+  {no:103, time:"10:35", end:"10:45", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"松", matchKey:"r1a", home:"松T", away:""},
+  {no:103, time:"10:35", end:"10:45", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"松", matchKey:"r1a", home:"松T", away:""},
+  {no:103, time:"10:35", end:"10:45", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"松", matchKey:"r1a", home:"松T", away:""},
+  {no:103, time:"10:35", end:"10:45", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"松", matchKey:"r1a", home:"松T", away:""},
+  {no:104, time:"11:00", end:"11:10", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"梅", matchKey:"r1b", home:"梅T", away:""},
+  {no:104, time:"11:00", end:"11:10", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"竹", matchKey:"r1b", home:"竹T", away:""},
+  {no:104, time:"11:00", end:"11:10", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"梅", matchKey:"r1b", home:"梅T", away:""},
+  {no:104, time:"11:00", end:"11:10", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"梅", matchKey:"r1b", home:"梅T", away:""},
+  {no:104, time:"11:00", end:"11:10", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"梅", matchKey:"r1b", home:"梅T", away:""},
+  {no:104, time:"11:00", end:"11:10", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"梅", matchKey:"r1b", home:"梅T", away:""},
+  {no:105, time:"11:25", end:"11:35", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"竹", matchKey:"r1b", home:"竹T", away:""},
+  {no:105, time:"11:25", end:"11:35", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"梅", matchKey:"r1b", home:"梅T", away:""},
+  {no:105, time:"11:25", end:"11:35", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"竹", matchKey:"r1b", home:"竹T", away:""},
+  {no:105, time:"11:25", end:"11:35", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"松", matchKey:"r1b", home:"松T", away:""},
+  {no:105, time:"11:25", end:"11:35", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"竹", matchKey:"r1b", home:"竹T", away:""},
+  {no:105, time:"11:25", end:"11:35", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"竹", matchKey:"r1b", home:"竹T", away:""},
+  {no:106, time:"11:50", end:"12:00", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"松", matchKey:"r1b", home:"松T", away:""},
+  {no:106, time:"11:50", end:"12:00", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"竹", matchKey:"r1a", home:"竹T", away:""},
+  {no:106, time:"11:50", end:"12:00", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"松", matchKey:"r1b", home:"松T", away:""},
+  {no:106, time:"11:50", end:"12:00", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"竹", matchKey:"r1b", home:"竹T", away:""},
+  {no:106, time:"11:50", end:"12:00", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"松", matchKey:"r1b", home:"松T", away:""},
+  {no:106, time:"11:50", end:"12:00", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"松", matchKey:"r1b", home:"松T", away:""},
+  {no:107, time:"12:15", end:"12:25", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"梅", matchKey:"sf1", home:"梅T", away:""},
+  {no:107, time:"12:15", end:"12:25", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"梅", matchKey:"sf1", home:"梅T", away:""},
+  {no:107, time:"12:15", end:"12:25", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"梅", matchKey:"sf1", home:"梅T", away:""},
+  {no:107, time:"12:15", end:"12:25", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"梅", matchKey:"sf1", home:"梅T", away:""},
+  {no:107, time:"12:15", end:"12:25", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"梅", matchKey:"sf1", home:"梅T", away:""},
+  {no:107, time:"12:15", end:"12:25", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"梅", matchKey:"sf1", home:"梅T", away:""},
+  {no:108, time:"12:40", end:"12:50", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"竹", matchKey:"sf1", home:"竹T", away:""},
+  {no:108, time:"12:40", end:"12:50", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"竹", matchKey:"sf1", home:"竹T", away:""},
+  {no:108, time:"12:40", end:"12:50", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"竹", matchKey:"sf1", home:"竹T", away:""},
+  {no:108, time:"12:40", end:"12:50", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"竹", matchKey:"sf1", home:"竹T", away:""},
+  {no:108, time:"12:40", end:"12:50", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"竹", matchKey:"sf1", home:"竹T", away:""},
+  {no:108, time:"12:40", end:"12:50", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"竹", matchKey:"sf1", home:"竹T", away:""},
+  {no:109, time:"13:05", end:"13:15", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"松", matchKey:"sf1", home:"松T", away:""},
+  {no:109, time:"13:05", end:"13:15", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"松", matchKey:"sf1", home:"松T", away:""},
+  {no:109, time:"13:05", end:"13:15", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"松", matchKey:"sf1", home:"松T", away:""},
+  {no:109, time:"13:05", end:"13:15", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"松", matchKey:"sf1", home:"松T", away:""},
+  {no:109, time:"13:05", end:"13:15", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"松", matchKey:"sf1", home:"松T", away:""},
+  {no:109, time:"13:05", end:"13:15", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"松", matchKey:"sf1", home:"松T", away:""},
+  {no:110, time:"13:30", end:"13:40", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"梅", matchKey:"sf2", home:"梅T", away:""},
+  {no:110, time:"13:30", end:"13:40", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"梅", matchKey:"sf2", home:"梅T", away:""},
+  {no:110, time:"13:30", end:"13:40", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"竹", matchKey:"sf2", home:"竹T", away:""},
+  {no:110, time:"13:30", end:"13:40", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"梅", matchKey:"sf2", home:"梅T", away:""},
+  {no:110, time:"13:30", end:"13:40", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"梅", matchKey:"sf2", home:"梅T", away:""},
+  {no:110, time:"13:30", end:"13:40", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"梅", matchKey:"sf2", home:"梅T", away:""},
+  {no:111, time:"13:55", end:"14:05", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"竹", matchKey:"sf2", home:"竹T", away:""},
+  {no:111, time:"13:55", end:"14:05", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"竹", matchKey:"sf2", home:"竹T", away:""},
+  {no:111, time:"13:55", end:"14:05", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"梅", matchKey:"sf2", home:"梅T", away:""},
+  {no:111, time:"13:55", end:"14:05", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"竹", matchKey:"sf2", home:"竹T", away:""},
+  {no:111, time:"13:55", end:"14:05", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"竹", matchKey:"sf2", home:"竹T", away:""},
+  {no:111, time:"13:55", end:"14:05", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"竹", matchKey:"sf2", home:"竹T", away:""},
+  {no:112, time:"14:20", end:"14:30", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"松", matchKey:"sf2", home:"松T", away:""},
+  {no:112, time:"14:20", end:"14:30", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"松", matchKey:"sf2", home:"松T", away:""},
+  {no:112, time:"14:20", end:"14:30", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"松", matchKey:"sf2", home:"松T", away:""},
+  {no:112, time:"14:20", end:"14:30", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"松", matchKey:"sf2", home:"松T", away:""},
+  {no:112, time:"14:20", end:"14:30", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"松", matchKey:"sf2", home:"松T", away:""},
+  {no:112, time:"14:20", end:"14:30", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"松", matchKey:"sf2", home:"松T", away:""},
+  {no:113, time:"14:45", end:"14:55", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"梅", matchKey:"fifth", home:"梅T", away:""},
+  {no:113, time:"14:45", end:"14:55", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"梅", matchKey:"fifth", home:"梅T", away:""},
+  {no:113, time:"14:45", end:"14:55", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"梅", matchKey:"fifth", home:"梅T", away:""},
+  {no:113, time:"14:45", end:"14:55", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"梅", matchKey:"fifth", home:"梅T", away:""},
+  {no:113, time:"14:45", end:"14:55", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"梅", matchKey:"fifth", home:"梅T", away:""},
+  {no:113, time:"14:45", end:"14:55", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"梅", matchKey:"fifth", home:"梅T", away:""},
+  {no:114, time:"15:10", end:"15:20", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"竹", matchKey:"fifth", home:"竹T", away:""},
+  {no:114, time:"15:10", end:"15:20", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"竹", matchKey:"fifth", home:"竹T", away:""},
+  {no:114, time:"15:10", end:"15:20", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"竹", matchKey:"fifth", home:"竹T", away:""},
+  {no:114, time:"15:10", end:"15:20", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"竹", matchKey:"fifth", home:"竹T", away:""},
+  {no:114, time:"15:10", end:"15:20", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"竹", matchKey:"fifth", home:"竹T", away:""},
+  {no:114, time:"15:10", end:"15:20", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"竹", matchKey:"fifth", home:"竹T", away:""},
+  {no:115, time:"15:35", end:"15:45", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"松", matchKey:"fifth", home:"松T", away:""},
+  {no:115, time:"15:35", end:"15:45", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"松", matchKey:"fifth", home:"松T", away:""},
+  {no:115, time:"15:35", end:"15:45", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"松", matchKey:"fifth", home:"松T", away:""},
+  {no:115, time:"15:35", end:"15:45", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"松", matchKey:"fifth", home:"松T", away:""},
+  {no:115, time:"15:35", end:"15:45", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"松", matchKey:"fifth", home:"松T", away:""},
+  {no:115, time:"15:35", end:"15:45", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"松", matchKey:"fifth", home:"松T", away:""},
+  {no:116, time:"16:00", end:"16:10", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"梅", matchKey:"third", home:"梅T", away:""},
+  {no:116, time:"16:00", end:"16:10", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"梅", matchKey:"third", home:"梅T", away:""},
+  {no:116, time:"16:00", end:"16:10", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"梅", matchKey:"third", home:"梅T", away:""},
+  {no:116, time:"16:00", end:"16:10", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"梅", matchKey:"third", home:"梅T", away:""},
+  {no:116, time:"16:00", end:"16:10", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"梅", matchKey:"third", home:"梅T", away:""},
+  {no:116, time:"16:00", end:"16:10", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"梅", matchKey:"third", home:"梅T", away:""},
+  {no:117, time:"16:25", end:"16:35", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"竹", matchKey:"third", home:"竹T", away:""},
+  {no:117, time:"16:25", end:"16:35", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"竹", matchKey:"third", home:"竹T", away:""},
+  {no:117, time:"16:25", end:"16:35", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"竹", matchKey:"third", home:"竹T", away:""},
+  {no:117, time:"16:25", end:"16:35", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"竹", matchKey:"third", home:"竹T", away:""},
+  {no:117, time:"16:25", end:"16:35", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"竹", matchKey:"third", home:"竹T", away:""},
+  {no:117, time:"16:25", end:"16:35", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"竹", matchKey:"third", home:"竹T", away:""},
+  {no:201, time:"9:20", end:"9:32", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"松", matchKey:"third", home:"松T", away:""},
+  {no:201, time:"9:20", end:"9:32", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"松", matchKey:"third", home:"松T", away:""},
+  {no:201, time:"9:20", end:"9:32", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"松", matchKey:"third", home:"松T", away:""},
+  {no:201, time:"9:20", end:"9:32", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"松", matchKey:"third", home:"松T", away:""},
+  {no:201, time:"9:20", end:"9:32", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"松", matchKey:"third", home:"松T", away:""},
+  {no:201, time:"9:20", end:"9:32", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"松", matchKey:"third", home:"松T", away:""},
+  {no:202, time:"9:42", end:"9:54", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"梅", matchKey:"final", home:"梅T", away:""},
+  {no:202, time:"9:42", end:"9:54", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"梅", matchKey:"final", home:"梅T", away:""},
+  {no:202, time:"9:42", end:"9:54", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"梅", matchKey:"final", home:"梅T", away:""},
+  {no:202, time:"9:42", end:"9:54", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"梅", matchKey:"final", home:"梅T", away:""},
+  {no:202, time:"9:42", end:"9:54", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"梅", matchKey:"final", home:"梅T", away:""},
+  {no:202, time:"9:42", end:"9:54", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"梅", matchKey:"final", home:"梅T", away:""},
+  {no:203, time:"10:04", end:"10:18", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"竹", matchKey:"final", home:"竹T", away:""},
+  {no:203, time:"10:04", end:"10:18", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"竹", matchKey:"final", home:"竹T", away:""},
+  {no:203, time:"10:04", end:"10:18", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"竹", matchKey:"final", home:"竹T", away:""},
+  {no:203, time:"10:04", end:"10:18", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"竹", matchKey:"final", home:"竹T", away:""},
+  {no:203, time:"10:04", end:"10:18", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"竹", matchKey:"final", home:"竹T", away:""},
+  {no:203, time:"10:04", end:"10:18", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"竹", matchKey:"final", home:"竹T", away:""},
+  {no:204, time:"11:00", end:"11:20", venue:"第二体育館A", sport:"男子バスケ", bracket:true, grade:"松", matchKey:"final", home:"松T", away:""},
+  {no:205, time:"11:30", end:"11:50", venue:"第二体育館B", sport:"女子バスケ", bracket:true, grade:"松", matchKey:"final", home:"松T", away:""},
+  {no:206, time:"12:00", end:"12:20", venue:"第一グラウンド", sport:"男子サッカー", bracket:true, grade:"松", matchKey:"final", home:"松T", away:""},
+  {no:206, time:"12:00", end:"12:20", venue:"第二グラウンド", sport:"女子サッカー", bracket:true, grade:"松", matchKey:"final", home:"松T", away:""},
+  {no:207, time:"12:40", end:"13:00", venue:"上テニスコート", sport:"女子バレー", bracket:true, grade:"松", matchKey:"final", home:"松T", away:""},
+  {no:207, time:"12:40", end:"13:00", venue:"下テニスコート", sport:"男子バレー", bracket:true, grade:"松", matchKey:"final", home:"松T", away:""},
+
 ];
 SCHEDULE.forEach((g,i)=>{ g.id = `g${i}`; });
 
@@ -662,8 +1136,330 @@ function render(snapshot){
   }
   // 現在選択中のクラス（クロージャ変数）
   if(!window._viewerSelectedClass){
-    const firstTeam = [...new Set(SCHEDULE.flatMap(g=>[g.home, g.away]))].sort()[0];
+    const firstTeam = [...new Set(SCHEDULE.flatMap(g=>[g.home, g.away]).filter(t=>t && t!=='' && !t.endsWith('T')))].sort()[0];
     window._viewerSelectedClass = firstTeam;
+  }
+
+  // ==== トーナメント表ビュー（3サブタブ） ====
+  function buildTournamentView(selSport, selGrade, subTab){
+    const sports = ['男子バスケ','女子バスケ','男子サッカー','女子サッカー','男子バレー','女子バレー'];
+    const grades = ['松','竹','梅'];
+    if(!selSport || !sports.includes(selSport)) selSport = sports[0];
+    if(!selGrade) selGrade = '松';
+    if(!subTab) subTab = 'detail';
+
+    // リーグ順位計算（予選試合のみ）
+    function getLeagueRanking(sport, league){
+      const lg = SCHEDULE.filter(g=>g.sport===sport && g.league===league && !g.bracket);
+      const teams = [...new Set(lg.flatMap(g=>[g.home, g.away]))];
+      const stat = {};
+      teams.forEach(t=>{ stat[t] = {team:t,pts:0,gf:0,ga:0}; });
+      lg.forEach(g=>{
+        const r = results[g.id];
+        if(!r || r.status !== 'done' || r.homeScore == null) return;
+        stat[g.home].gf += r.homeScore; stat[g.home].ga += r.awayScore;
+        stat[g.away].gf += r.awayScore; stat[g.away].ga += r.homeScore;
+        if(r.homeScore > r.awayScore){ stat[g.home].pts += 3; }
+        else if(r.homeScore < r.awayScore){ stat[g.away].pts += 3; }
+        else{ stat[g.home].pts += 1; stat[g.away].pts += 1; }
+      });
+      return Object.values(stat).sort((a,b)=>{
+        if(b.pts !== a.pts) return b.pts - a.pts;
+        const aDiff = a.gf - a.ga, bDiff = b.gf - b.ga;
+        if(bDiff !== aDiff) return bDiff - aDiff;
+        return b.gf - a.gf;
+      });
+    }
+    function getSeeds(sport, grade){
+      const idx = {'松':0, '竹':1, '梅':2}[grade];
+      return ['A','B','C','D','E','F'].map(L=>{
+        const sorted = getLeagueRanking(sport, L);
+        return sorted[idx] ? sorted[idx].team : null;
+      });
+    }
+    function getMatch(sport, grade, matchKey){
+      const g = SCHEDULE.find(g=>g.bracket && g.sport===sport && g.grade===grade && g.matchKey===matchKey);
+      if(!g) return null;
+      const r = results[g.id];
+      if(!r || r.status !== 'done' || r.homeScore == null) return null;
+      return r;
+    }
+    function getWinner(sport, grade, matchKey, homeT, awayT){
+      const r = getMatch(sport, grade, matchKey);
+      if(!r) return null;
+      if(r.winner === 'home') return homeT;
+      if(r.winner === 'away') return awayT;
+      if(r.homeScore === r.awayScore) return null;
+      return r.homeScore > r.awayScore ? homeT : awayT;
+    }
+    function getLoser(sport, grade, matchKey, homeT, awayT){
+      const r = getMatch(sport, grade, matchKey);
+      if(!r) return null;
+      if(r.winner === 'home') return awayT;
+      if(r.winner === 'away') return homeT;
+      if(r.homeScore === r.awayScore) return null;
+      return r.homeScore > r.awayScore ? awayT : homeT;
+    }
+    // トーナメント全体の進行状況サマリ
+    function getTournamentSummary(sport, grade){
+      const seeds = getSeeds(sport, grade);
+      const [tA, tB, tC, tD, tE, tF] = seeds;
+      const r1a = getMatch(sport, grade, 'r1a');
+      const r1b = getMatch(sport, grade, 'r1b');
+      const sf1 = getMatch(sport, grade, 'sf1');
+      const sf2 = getMatch(sport, grade, 'sf2');
+      const fin = getMatch(sport, grade, 'final');
+      const r1aW = getWinner(sport, grade, 'r1a', tA, tB);
+      const r1bW = getWinner(sport, grade, 'r1b', tE, tF);
+      const sf1W = getWinner(sport, grade, 'sf1', r1aW, tC);
+      const sf2W = getWinner(sport, grade, 'sf2', tD, r1bW);
+      const finW = getWinner(sport, grade, 'final', sf1W, sf2W);
+      let phase = '未開始';
+      let phaseClass = 'pending';
+      if(finW){ phase = `優勝: ${finW}`; phaseClass = 'champion'; }
+      else if(fin){ phase = '決勝終了'; phaseClass = 'live'; }
+      else if(sf1 && sf2){ phase = '決勝待ち'; phaseClass = 'live'; }
+      else if(sf1 || sf2){ phase = '準決勝中'; phaseClass = 'live'; }
+      else if(r1a && r1b){ phase = '準決勝待ち'; phaseClass = 'live'; }
+      else if(r1a || r1b){ phase = '1回戦中'; phaseClass = 'live'; }
+      else{
+        // シードがセットされているか
+        if(seeds.every(s=>s)) { phase = '開始待ち'; phaseClass = 'ready'; }
+      }
+      return { phase, phaseClass, champion: finW };
+    }
+
+    // === サブビュー1: 一覧 ===
+    function buildOverview(){
+      const cards = sports.flatMap(sport=>{
+        return grades.map(grade=>{
+          const summary = getTournamentSummary(sport, grade);
+          return `<button class="tour-card-btn" data-sport="${sport}" data-grade="${grade}">
+            <div class="tc-sport">${sport}</div>
+            <div class="tc-grade tc-grade-${grade}">${grade}</div>
+            <div class="tc-phase tc-${summary.phaseClass}">${summary.phase}</div>
+          </button>`;
+        });
+      }).join('');
+      return `<div class="tour-overview-grid">${cards}</div>`;
+    }
+
+    // === サブビュー2: タイムライン ===
+    function buildTimeline(){
+      // 3日目・4日目のトーナメント試合を試合枠ごとにまとめる
+      const tGames = SCHEDULE.filter(g=>g.bracket).sort((a,b)=>{
+        if(a.no !== b.no) return a.no - b.no;
+        return 0;
+      });
+      // 試合枠ごとにグルーピング
+      const groups = {};
+      tGames.forEach(g=>{
+        const key = `${g.no}`;
+        if(!groups[key]) groups[key] = { no: g.no, time: g.time, end: g.end, day: gameDay(g), games: [] };
+        groups[key].games.push(g);
+      });
+      const groupList = Object.values(groups).sort((a,b)=>a.no - b.no);
+
+      // 各試合の対戦カード解決
+      function resolveCard(g){
+        const sport = g.sport, grade = g.grade, mkey = g.matchKey;
+        const seeds = getSeeds(sport, grade);
+        const [tA, tB, tC, tD, tE, tF] = seeds;
+        let home, away;
+        switch(mkey){
+          case 'r1a': home = tA; away = tB; break;
+          case 'r1b': home = tE; away = tF; break;
+          case 'sf1': home = getWinner(sport, grade, 'r1a', tA, tB); away = tC; break;
+          case 'sf2': home = tD; away = getWinner(sport, grade, 'r1b', tE, tF); break;
+          case 'final': 
+            home = getWinner(sport, grade, 'sf1', getWinner(sport, grade, 'r1a', tA, tB), tC);
+            away = getWinner(sport, grade, 'sf2', tD, getWinner(sport, grade, 'r1b', tE, tF));
+            break;
+          case 'third':
+            home = getLoser(sport, grade, 'sf1', getWinner(sport, grade, 'r1a', tA, tB), tC);
+            away = getLoser(sport, grade, 'sf2', tD, getWinner(sport, grade, 'r1b', tE, tF));
+            break;
+          case 'fifth':
+            home = getLoser(sport, grade, 'r1a', tA, tB);
+            away = getLoser(sport, grade, 'r1b', tE, tF);
+            break;
+        }
+        return { home, away };
+      }
+      const matchNameMap = {r1a:'1回戦', r1b:'1回戦', sf1:'準決勝', sf2:'準決勝', final:'決勝', third:'3位決定戦', fifth:'5位決定戦'};
+
+      const blocks = groupList.map(grp=>{
+        const dayLabel = `${grp.day}日目`;
+        let displayNo = grp.no;
+        if(grp.no >= 101 && grp.no <= 199) displayNo = grp.no - 100;
+        else if(grp.no >= 201 && grp.no <= 299) displayNo = grp.no - 200;
+        const rows = grp.games.map(g=>{
+          const card = resolveCard(g);
+          const r = results[g.id];
+          const has = r && r.status === 'done' && r.homeScore != null;
+          const winnerSide = has ? (r.homeScore > r.awayScore ? 'home' : r.awayScore > r.homeScore ? 'away' : 'draw') : '';
+          const homeLabel = card.home || `${g.grade}T`;
+          const awayLabel = card.away || `${g.grade}T`;
+          return `<div class="tl-row ${has?'done':''}">
+            <span class="tl-sport">${g.sport}</span>
+            <span class="tl-round ${g.grade}">${g.grade} ${matchNameMap[g.matchKey]||''}</span>
+            <span class="tl-card">
+              <span class="tl-home ${winnerSide==='home'?'win':''}">${homeLabel}</span>
+              <span class="tl-vs">vs</span>
+              <span class="tl-away ${winnerSide==='away'?'win':''}">${awayLabel}</span>
+            </span>
+            <span class="tl-score">${has?`${r.homeScore}-${r.awayScore}`:'-'}</span>
+          </div>`;
+        }).join('');
+        return `<div class="tl-block">
+          <div class="tl-head">
+            <span class="tl-day">${dayLabel}</span>
+            <span class="tl-no">試合${displayNo}</span>
+            <span class="tl-time">${grp.time}〜${grp.end}</span>
+          </div>
+          <div class="tl-body">${rows}</div>
+        </div>`;
+      }).join('');
+      return `<div class="tl-container">${blocks}</div>`;
+    }
+
+    // === サブビュー3: 詳細（既存トーナメント図） ===
+    function buildDetail(){
+      const seeds = getSeeds(selSport, selGrade);
+      const [tA, tB, tC, tD, tE, tF] = seeds;
+      const r1aWin = getWinner(selSport, selGrade, 'r1a', tA, tB);
+      const r1aLose = getLoser(selSport, selGrade, 'r1a', tA, tB);
+      const r1bWin = getWinner(selSport, selGrade, 'r1b', tE, tF);
+      const r1bLose = getLoser(selSport, selGrade, 'r1b', tE, tF);
+      const sf1Win = getWinner(selSport, selGrade, 'sf1', r1aWin, tC);
+      const sf1Lose = getLoser(selSport, selGrade, 'sf1', r1aWin, tC);
+      const sf2Win = getWinner(selSport, selGrade, 'sf2', tD, r1bWin);
+      const sf2Lose = getLoser(selSport, selGrade, 'sf2', tD, r1bWin);
+      const finalWin = getWinner(selSport, selGrade, 'final', sf1Win, sf2Win);
+      const thirdWin = getWinner(selSport, selGrade, 'third', sf1Lose, sf2Lose);
+      const fifthWin = getWinner(selSport, selGrade, 'fifth', r1aLose, r1bLose);
+
+      function matchBox(matchKey, homeT, awayT){
+        const r = getMatch(selSport, selGrade, matchKey);
+        const has = !!r;
+        let hH = false, hA = false;
+        if(has){
+          if(r.winner === 'home') hH = true;
+          else if(r.winner === 'away') hA = true;
+          else if(r.homeScore > r.awayScore) hH = true;
+          else if(r.awayScore > r.homeScore) hA = true;
+        }
+        const hLabel = homeT || '未定';
+        const aLabel = awayT || '未定';
+        const hCls = (!homeT?'tbd':'') + (hH?' winner':'');
+        const aCls = (!awayT?'tbd':'') + (hA?' winner':'');
+        const noteHtml = (has && r.note) ? `<div class="vt-note">${r.note}</div>` : '';
+        return `<div class="vt-mbox ${has?'done':''}">
+          <div class="vt-team ${hCls}"><span>${hLabel}</span><span class="vt-score">${has?r.homeScore:''}</span></div>
+          <div class="vt-div"></div>
+          <div class="vt-team ${aCls}"><span>${aLabel}</span><span class="vt-score">${has?r.awayScore:''}</span></div>
+          ${noteHtml}
+        </div>`;
+      }
+
+      const sportBtns = sports.map(s=>`<button class="vt-sport-btn ${s===selSport?'active':''}" data-sport="${s}">${s}</button>`).join('');
+      const gradeBtns = [
+        {key:'松', label:'松（1位）'}, {key:'竹', label:'竹（2位）'}, {key:'梅', label:'梅（3位）'},
+      ].map(g=>`<button class="vt-grade-btn ${g.key===selGrade?'active':''}" data-grade="${g.key}">${g.label}</button>`).join('');
+
+      return `<div class="vt-selectors">
+        <div class="vt-sport-row">${sportBtns}</div>
+        <div class="vt-grade-row">${gradeBtns}</div>
+      </div>
+      <div class="vt-bracket">
+        <div class="vt-title">${selSport} ${selGrade}トーナメント</div>
+        <div class="vt-svg-wrap">
+          <svg viewBox="0 0 420 360" class="vt-svg" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="#0a0a0a" stroke-width="1.5" fill="none">
+              <line x1="70" y1="20" x2="160" y2="20"/>
+              <line x1="70" y1="60" x2="160" y2="60"/>
+              <line x1="160" y1="20" x2="160" y2="60"/>
+              <line x1="220" y1="40" x2="245" y2="40"/>
+              <line x1="70" y1="100" x2="245" y2="100"/>
+              <line x1="245" y1="40" x2="245" y2="100"/>
+              <line x1="245" y1="70" x2="260" y2="70"/>
+              <line x1="320" y1="70" x2="345" y2="70"/>
+              <line x1="70" y1="260" x2="245" y2="260"/>
+              <line x1="70" y1="300" x2="160" y2="300"/>
+              <line x1="70" y1="340" x2="160" y2="340"/>
+              <line x1="160" y1="300" x2="160" y2="340"/>
+              <line x1="220" y1="320" x2="245" y2="320"/>
+              <line x1="245" y1="260" x2="245" y2="320"/>
+              <line x1="245" y1="290" x2="260" y2="290"/>
+              <line x1="320" y1="290" x2="345" y2="290"/>
+              <line x1="345" y1="70" x2="345" y2="290"/>
+              <line x1="345" y1="180" x2="360" y2="180"/>
+            </g>
+            <g>
+              <rect x="10" y="8" width="60" height="24" rx="3" fill="#fafaf7" stroke="#0a0a0a" stroke-width="1.5"/>
+              <text x="40" y="24" text-anchor="middle" class="vt-seed ${!tA?'tbd':''}">${tA||'未定'}</text>
+              <rect x="10" y="48" width="60" height="24" rx="3" fill="#fafaf7" stroke="#0a0a0a" stroke-width="1.5"/>
+              <text x="40" y="64" text-anchor="middle" class="vt-seed ${!tB?'tbd':''}">${tB||'未定'}</text>
+              <rect x="10" y="88" width="60" height="24" rx="3" fill="#fafaf7" stroke="#0a0a0a" stroke-width="1.5"/>
+              <text x="40" y="104" text-anchor="middle" class="vt-seed ${!tC?'tbd':''}">${tC||'未定'}</text>
+              <rect x="10" y="248" width="60" height="24" rx="3" fill="#fafaf7" stroke="#0a0a0a" stroke-width="1.5"/>
+              <text x="40" y="264" text-anchor="middle" class="vt-seed ${!tD?'tbd':''}">${tD||'未定'}</text>
+              <rect x="10" y="288" width="60" height="24" rx="3" fill="#fafaf7" stroke="#0a0a0a" stroke-width="1.5"/>
+              <text x="40" y="304" text-anchor="middle" class="vt-seed ${!tE?'tbd':''}">${tE||'未定'}</text>
+              <rect x="10" y="328" width="60" height="24" rx="3" fill="#fafaf7" stroke="#0a0a0a" stroke-width="1.5"/>
+              <text x="40" y="344" text-anchor="middle" class="vt-seed ${!tF?'tbd':''}">${tF||'未定'}</text>
+            </g>
+            <g>
+              <text x="5" y="24" class="vt-seed-label">A</text>
+              <text x="5" y="64" class="vt-seed-label">B</text>
+              <text x="5" y="104" class="vt-seed-label">C</text>
+              <text x="5" y="264" class="vt-seed-label">D</text>
+              <text x="5" y="304" class="vt-seed-label">E</text>
+              <text x="5" y="344" class="vt-seed-label">F</text>
+            </g>
+            <foreignObject x="160" y="10" width="60" height="64">${matchBox('r1a', tA, tB)}</foreignObject>
+            <foreignObject x="160" y="290" width="60" height="64">${matchBox('r1b', tE, tF)}</foreignObject>
+            <foreignObject x="260" y="40" width="60" height="64">${matchBox('sf1', r1aWin, tC)}</foreignObject>
+            <foreignObject x="260" y="260" width="60" height="64">${matchBox('sf2', tD, r1bWin)}</foreignObject>
+            <foreignObject x="360" y="150" width="60" height="64">${matchBox('final', sf1Win, sf2Win)}</foreignObject>
+          </svg>
+        </div>
+        ${finalWin ? `<div class="vt-champion">優勝 ${finalWin}</div>` : ''}
+      </div>
+      <div class="vt-extras">
+        <div class="vt-extra-card">
+          <h4>3位決定戦</h4>
+          ${matchBox('third', sf1Lose, sf2Lose)}
+          ${thirdWin ? `<div class="vt-rank-result third">3位: ${thirdWin}</div>` : ''}
+        </div>
+        <div class="vt-extra-card">
+          <h4>5位決定戦</h4>
+          ${matchBox('fifth', r1aLose, r1bLose)}
+          ${fifthWin ? `<div class="vt-rank-result fifth">5位: ${fifthWin}</div>` : ''}
+        </div>
+      </div>`;
+    }
+
+    // === サブタブ切替 ===
+    const subTabs = [
+      { key: 'overview', label: '🗺 一覧' },
+      { key: 'timeline', label: '📅 タイムライン' },
+      { key: 'detail', label: '🏆 詳細' },
+    ];
+    const subTabBtns = subTabs.map(t=>`<button class="vt-subtab-btn ${t.key===subTab?'active':''}" data-subtab="${t.key}">${t.label}</button>`).join('');
+    let content = '';
+    if(subTab === 'overview') content = buildOverview();
+    else if(subTab === 'timeline') content = buildTimeline();
+    else content = buildDetail();
+    return `<div class="vt-subtabs">${subTabBtns}</div><div class="vt-subtab-content">${content}</div>`;
+  }
+
+  if(!window._viewerSelectedSport){
+    window._viewerSelectedSport = '男子バスケ';
+    window._viewerSelectedGrade = '松';
+  }
+  if(!window._viewerTournamentSubtab){
+    window._viewerTournamentSubtab = 'overview';
   }
 
   document.getElementById('container').innerHTML = `
@@ -681,6 +1477,7 @@ function render(snapshot){
     </div>
     <section id="sec-standings"><h2>順位表</h2>${standingsHtml}</section>
     <section id="sec-class"><h2>クラス別戦績</h2><div id="class-view-container">${buildClassView(window._viewerSelectedClass)}</div></section>
+    <section id="sec-tournament"><h2>決勝トーナメント</h2><div id="tournament-view-container">${buildTournamentView(window._viewerSelectedSport, window._viewerSelectedGrade, window._viewerTournamentSubtab)}</div></section>
     <section id="sec-schedule"><h2>試合スケジュール</h2>${scheduleHtml}</section>
     <div class="footer">スナップショット：${dateStr} / 体育祭速報ビューア</div>
     <div style="height:80px"></div>
@@ -690,6 +1487,7 @@ function render(snapshot){
       <button class="bt-btn" data-target="sec-live"><span class="bt-ico">📺</span><span>LIVE</span></button>
       <button class="bt-btn" data-target="sec-standings"><span class="bt-ico">🏆</span><span>順位</span></button>
       <button class="bt-btn" data-target="sec-class"><span class="bt-ico">👥</span><span>クラス</span></button>
+      <button class="bt-btn" data-target="sec-tournament"><span class="bt-ico">🥇</span><span>決勝T</span></button>
       <button class="bt-btn" data-target="sec-schedule"><span class="bt-ico">📋</span><span>日程</span></button>
     </nav>
   `;
@@ -702,7 +1500,7 @@ function render(snapshot){
       }
     });
   });
-  // クラス選択ボタン（イベント委譲）
+  // クラス選択ボタン
   function attachClassBtnEvents(){
     document.querySelectorAll('.cv-class-btn').forEach(b=>{
       b.addEventListener('click', ()=>{
@@ -713,6 +1511,41 @@ function render(snapshot){
     });
   }
   attachClassBtnEvents();
+  // トーナメント選択ボタン
+  function attachTournamentBtnEvents(){
+    function refresh(){
+      document.getElementById('tournament-view-container').innerHTML = buildTournamentView(window._viewerSelectedSport, window._viewerSelectedGrade, window._viewerTournamentSubtab);
+      attachTournamentBtnEvents();
+    }
+    document.querySelectorAll('.vt-subtab-btn').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        window._viewerTournamentSubtab = b.dataset.subtab;
+        refresh();
+      });
+    });
+    document.querySelectorAll('.vt-sport-btn').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        window._viewerSelectedSport = b.dataset.sport;
+        refresh();
+      });
+    });
+    document.querySelectorAll('.vt-grade-btn').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        window._viewerSelectedGrade = b.dataset.grade;
+        refresh();
+      });
+    });
+    // 一覧カードをタップ→詳細にジャンプ
+    document.querySelectorAll('.tour-card-btn').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        window._viewerSelectedSport = b.dataset.sport;
+        window._viewerSelectedGrade = b.dataset.grade;
+        window._viewerTournamentSubtab = 'detail';
+        refresh();
+      });
+    });
+  }
+  attachTournamentBtnEvents();
 }
 
 // 初期化
