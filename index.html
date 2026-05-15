@@ -72,20 +72,20 @@ section.live-block h2{border-bottom-color:#e63946;color:#e63946}
   background:transparent;
   border:none;
   cursor:pointer;
-  padding:.6rem .15rem .55rem;
+  padding:.55rem .1rem .5rem;
   font-family:inherit;
   font-weight:700;
-  font-size:.65rem;
+  font-size:.6rem;
   color:#666;
   border-top:3px solid transparent;
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:.15rem;
+  gap:.12rem;
   line-height:1.1;
 }
 .bt-btn:active{background:#f4f1ea}
-.bt-btn .bt-ico{font-size:1.15rem;line-height:1}
+.bt-btn .bt-ico{font-size:1.05rem;line-height:1}
 section{scroll-margin-top:1rem}
 #sec-top,#sec-live,#sec-standings,#sec-schedule,#sec-class{scroll-margin-top:1rem}
 
@@ -471,6 +471,218 @@ section{scroll-margin-top:1rem}
 .vt-rank-result.third{color:#e63946}
 .vt-rank-result.fifth{color:#2a9d8f}
 #sec-tournament{scroll-margin-top:1rem}
+#sec-final{scroll-margin-top:1rem}
+
+/* === 最終結果 === */
+.fr-container{
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+.fr-tabs{
+  display:flex;
+  flex-direction:column;
+  gap:.3rem;
+  background:white;
+  border:1.5px solid #0a0a0a;
+  border-radius:6px;
+  padding:.3rem;
+}
+.fr-tabs-overall{
+  display:flex;
+}
+.fr-tabs-sports{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:.25rem;
+}
+.fr-tab{
+  background:transparent;
+  border:1.5px solid transparent;
+  border-radius:4px;
+  padding:.45rem .3rem;
+  font-family:inherit;
+  font-weight:700;
+  font-size:.72rem;
+  cursor:pointer;
+  color:#666;
+  white-space:nowrap;
+  text-align:center;
+}
+.fr-tabs-overall .fr-tab{
+  flex:1;
+}
+.fr-tab.active{
+  background:#0a0a0a;
+  color:white;
+}
+.fr-tab:active{background:#f4f1ea}
+.fr-tab.active:active{background:#333}
+.fr-warn{
+  background:#fff4e6;
+  border:1.5px solid #f4a261;
+  border-radius:6px;
+  padding:.6rem .8rem;
+  font-size:.82rem;
+  color:#7a4a1a;
+  font-weight:700;
+}
+.fr-info{
+  background:#fafaf7;
+  border:1px solid #ddd;
+  border-radius:4px;
+  padding:.6rem .8rem;
+  font-size:.78rem;
+  line-height:1.5;
+  color:#444;
+}
+.fr-group{
+  background:white;
+  border:2px solid #0a0a0a;
+  border-radius:6px;
+  overflow:hidden;
+  box-shadow:3px 3px 0 #0a0a0a;
+}
+.fr-group-title{
+  margin:0;
+  padding:.55rem .8rem;
+  font-size:.9rem;
+  font-weight:900;
+  letter-spacing:.05em;
+  color:white;
+  background:linear-gradient(135deg, #0a0a0a, #2a2a2a);
+  border:none;
+}
+.fr-group-松 .fr-group-title{background:linear-gradient(135deg, #e63946, #c1121f)}
+.fr-group-竹 .fr-group-title{background:linear-gradient(135deg, #2a9d8f, #1e7167)}
+.fr-group-梅 .fr-group-title{background:linear-gradient(135deg, #777, #555)}
+.fr-rows{
+  display:flex;
+  flex-direction:column;
+}
+.fr-row{
+  display:grid;
+  grid-template-columns:54px 1fr auto;
+  align-items:center;
+  gap:.6rem;
+  padding:.55rem .8rem;
+  background:white;
+  border:none;
+  border-bottom:1px dashed #e0dcd0;
+  font-family:inherit;
+  text-align:left;
+  cursor:pointer;
+  width:100%;
+}
+.fr-row:last-child{border-bottom:none}
+.fr-row:active{background:#f4f1ea}
+.fr-rank{
+  font-family:'JetBrains Mono', monospace;
+  font-weight:900;
+  font-size:.95rem;
+  text-align:center;
+  padding:.2rem .3rem;
+  border-radius:3px;
+}
+.fr-rank-松{background:#fff4e6;color:#e63946;border:1.5px solid #e63946}
+.fr-rank-竹{background:#e6f4f1;color:#2a9d8f;border:1.5px solid #2a9d8f}
+.fr-rank-梅{background:#f4f1ea;color:#666;border:1.5px solid #888}
+.fr-rank-gold{
+  background:linear-gradient(135deg,#fff8dc,#ffd700);
+  color:#8b6914;
+  border:1.5px solid #d4af37;
+  font-weight:900;
+}
+.fr-rank-silver{
+  background:linear-gradient(135deg,#f5f5f5,#c0c0c0);
+  color:#444;
+  border:1.5px solid #999;
+  font-weight:900;
+}
+.fr-rank-bronze{
+  background:linear-gradient(135deg,#ffe4cc,#cd7f32);
+  color:#5a3a14;
+  border:1.5px solid #a0612a;
+  font-weight:900;
+}
+.fr-rank-default{
+  background:#fafaf7;
+  color:#444;
+  border:1.5px solid #ccc;
+}
+.fr-team{
+  font-family:'JetBrains Mono', monospace;
+  font-weight:700;
+  font-size:1rem;
+  color:#0a0a0a;
+}
+.fr-points{
+  font-family:'JetBrains Mono', monospace;
+  font-weight:900;
+  font-size:1.05rem;
+  color:#0a0a0a;
+}
+.fr-pts-unit{
+  font-size:.7rem;
+  font-weight:400;
+  color:#888;
+  margin-left:2px;
+}
+
+/* === 最終結果 モーダル === */
+.fr-modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  z-index:200;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:1rem;
+  overflow-y:auto;
+}
+.fr-modal{
+  background:white;
+  border:2px solid #0a0a0a;
+  border-radius:8px;
+  max-width:560px;
+  width:100%;
+  margin:auto;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  box-shadow:6px 6px 0 #0a0a0a;
+  max-height:90vh;
+}
+.fr-modal-head{
+  background:#0a0a0a;
+  color:white;
+  padding:.7rem 1rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:.5rem;
+  position:sticky;
+  top:0;
+}
+.fr-modal-title{
+  font-weight:700;
+  font-size:1rem;
+  font-family:'JetBrains Mono', monospace;
+}
+.fr-modal-close{
+  background:transparent;
+  border:none;
+  color:white;
+  font-size:1.4rem;
+  cursor:pointer;
+  padding:0 .3rem;
+  line-height:1;
+}
+.fr-modal-body{
+  padding:1rem;
+  overflow-y:auto;
+}
 
 /* === サブタブ === */
 .vt-subtabs{
@@ -1041,7 +1253,7 @@ function render(snapshot){
   }).join('');
 
   // === クラス別ビューを構築 ===
-  function buildClassView(selectedTeam){
+  function buildClassView(selectedTeam, filterSport){
     // 予選試合のhome/awayから実クラスを取得（トーナメントのダミー"梅T"などは除外）
     const allTeams = [...new Set(SCHEDULE.filter(g=>!g.bracket).flatMap(g=>[g.home, g.away]))].sort((a,b)=>{
       const [ay, ac] = a.split('-').map(Number);
@@ -1051,6 +1263,8 @@ function render(snapshot){
     });
     if(!selectedTeam || !allTeams.includes(selectedTeam)) selectedTeam = allTeams[0];
     const team = selectedTeam;
+    // フィルタ用：表示する競技配列
+    const displaySports = filterSport ? [filterSport] : sports;
     
     // ヘルパー：リーグ順位（予選のみ）
     function getLeagueRanking(sport, league){
@@ -1163,7 +1377,7 @@ function render(snapshot){
     });
     
     let totalW=0, totalL=0, totalD=0, totalGF=0, totalGA=0, totalGP=0;
-    const sportBlocks = sports.map(sport=>{
+    const sportBlocks = displaySports.map(sport=>{
       const sportGames = SCHEDULE.filter(g=>g.sport===sport && !g.bracket && (g.home===team || g.away===team));
       if(sportGames.length === 0){
         return `<div class="cv-sport-block">
@@ -1308,6 +1522,239 @@ function render(snapshot){
     const firstTeam = [...new Set(SCHEDULE.flatMap(g=>[g.home, g.away]).filter(t=>t && t!=='' && !t.endsWith('T')))].sort()[0];
     window._viewerSelectedClass = firstTeam;
   }
+
+  // ==== 最終結果ビュー（総合順位） ====
+  function buildFinalResultView(){
+    const sportsList = ['男子バスケ','女子バスケ','男子サッカー','女子サッカー','男子バレー','女子バレー'];
+    
+    // ヘルパー（buildTournamentView と同じロジック）
+    function getLeagueRanking(sport, league){
+      const lg = SCHEDULE.filter(g=>g.sport===sport && g.league===league && !g.bracket);
+      const teams = [...new Set(lg.flatMap(g=>[g.home, g.away]))];
+      const stat = {};
+      teams.forEach(t=>{ stat[t] = {team:t,pts:0,gf:0,ga:0}; });
+      lg.forEach(g=>{
+        const r = results[g.id];
+        if(!r || r.status !== 'done' || r.homeScore == null) return;
+        stat[g.home].gf += r.homeScore; stat[g.home].ga += r.awayScore;
+        stat[g.away].gf += r.awayScore; stat[g.away].ga += r.homeScore;
+        if(r.homeScore > r.awayScore){ stat[g.home].pts += 3; }
+        else if(r.homeScore < r.awayScore){ stat[g.away].pts += 3; }
+        else{ stat[g.home].pts += 1; stat[g.away].pts += 1; }
+      });
+      return Object.values(stat).sort((a,b)=>{
+        if(b.pts !== a.pts) return b.pts - a.pts;
+        const aDiff = a.gf - a.ga, bDiff = b.gf - b.ga;
+        if(bDiff !== aDiff) return bDiff - aDiff;
+        return b.gf - a.gf;
+      });
+    }
+    function getSeeds(sport, grade){
+      const idx = {'松':0, '竹':1, '梅':2}[grade];
+      return ['A','B','C','D','E','F'].map(L=>{
+        const sorted = getLeagueRanking(sport, L);
+        return sorted[idx] ? sorted[idx].team : null;
+      });
+    }
+    function getMatch(sport, grade, mk){
+      const g = SCHEDULE.find(g=>g.bracket && g.sport===sport && g.grade===grade && g.matchKey===mk);
+      if(!g) return null;
+      const r = results[g.id];
+      if(!r || r.status !== 'done' || r.homeScore == null) return null;
+      return r;
+    }
+    function getWin(r, h, a){
+      if(!r) return null;
+      if(r.winner === 'home') return h;
+      if(r.winner === 'away') return a;
+      if(r.homeScore === r.awayScore) return null;
+      return r.homeScore > r.awayScore ? h : a;
+    }
+    function getLose(r, h, a){
+      if(!r) return null;
+      if(r.winner === 'home') return a;
+      if(r.winner === 'away') return h;
+      if(r.homeScore === r.awayScore) return null;
+      return r.homeScore > r.awayScore ? a : h;
+    }
+    
+    // 1競技の1グレード（松/竹/梅）から1〜6位を抽出
+    // 戻り値: [1位, 2位, 3位, 4位, 5位, 6位] のクラス名配列（未確定はnull）
+    function getRankingForGrade(sport, grade){
+      const seeds = getSeeds(sport, grade);
+      const [tA, tB, tC, tD, tE, tF] = seeds;
+      const r1a = getMatch(sport, grade, 'r1a');
+      const r1b = getMatch(sport, grade, 'r1b');
+      const r1aW = getWin(r1a, tA, tB);
+      const r1aL = getLose(r1a, tA, tB);
+      const r1bW = getWin(r1b, tE, tF);
+      const r1bL = getLose(r1b, tE, tF);
+      const sf1 = getMatch(sport, grade, 'sf1');
+      const sf2 = getMatch(sport, grade, 'sf2');
+      const sf1W = getWin(sf1, r1aW, tC);
+      const sf1L = getLose(sf1, r1aW, tC);
+      const sf2W = getWin(sf2, tD, r1bW);
+      const sf2L = getLose(sf2, tD, r1bW);
+      const fin = getMatch(sport, grade, 'final');
+      const th = getMatch(sport, grade, 'third');
+      const fif = getMatch(sport, grade, 'fifth');
+      const finW = getWin(fin, sf1W, sf2W);
+      const finL = getLose(fin, sf1W, sf2W);
+      const thW = getWin(th, sf1L, sf2L);
+      const thL = getLose(th, sf1L, sf2L);
+      const fifW = getWin(fif, r1aL, r1bL);
+      const fifL = getLose(fif, r1aL, r1bL);
+      return [finW, finL, thW, thL, fifW, fifL];
+    }
+    
+    // 全競技×全グレードで集計：クラスごとの合計点を計算
+    // 順位ポイント：1位=18, 2位=17, ..., 18位=1
+    const classPoints = {};
+    const classRanksBySport = {}; // {team: {sport: rank}}
+    
+    sportsList.forEach(sport=>{
+      ['松','竹','梅'].forEach(grade=>{
+        const ranks = getRankingForGrade(sport, grade);
+        const baseRank = grade === '松' ? 0 : grade === '竹' ? 6 : 12;
+        ranks.forEach((team, idx)=>{
+          if(!team) return;
+          const overallRank = baseRank + idx + 1; // 1〜18
+          const points = 19 - overallRank; // 1位=18, 18位=1
+          if(!classPoints[team]) classPoints[team] = 0;
+          classPoints[team] += points;
+          if(!classRanksBySport[team]) classRanksBySport[team] = {};
+          classRanksBySport[team][sport] = overallRank;
+        });
+      });
+    });
+    
+    // 全クラス一覧（予選試合から抽出）
+    const allClasses = [...new Set(SCHEDULE.filter(g=>!g.bracket).flatMap(g=>[g.home, g.away]))];
+    // 未集計のクラスは0点で初期化
+    allClasses.forEach(c=>{ if(classPoints[c] === undefined) classPoints[c] = 0; });
+    
+    // 順位を集計
+    const ranking = allClasses.map(c=>({ team: c, points: classPoints[c] }))
+      .sort((a,b)=>b.points - a.points);
+    
+    // 順位を確定（同点処理：同点は同順位）
+    const ranks = [];
+    ranking.forEach((r, i)=>{
+      if(i === 0) ranks.push(1);
+      else{
+        const prev = ranking[i-1];
+        ranks.push(r.points === prev.points ? ranks[i-1] : i+1);
+      }
+    });
+    
+    const totalDone = SCHEDULE.filter(g=>{
+      const r = results[g.id];
+      return r && r.status === 'done' && r.homeScore != null;
+    }).length;
+    const totalGames = SCHEDULE.length;
+    const isComplete = totalDone === totalGames;
+    
+    // 1〜18位を一括で並べる
+    const rowsHtml = ranking.map((item, i)=>{
+      const rank = ranks[i];
+      let rankClass = 'fr-rank-default';
+      if(rank === 1) rankClass = 'fr-rank-gold';
+      else if(rank === 2) rankClass = 'fr-rank-silver';
+      else if(rank === 3) rankClass = 'fr-rank-bronze';
+      return `<button class="fr-row" data-team="${item.team}" data-points="${item.points}">
+        <span class="fr-rank ${rankClass}">${rank}位</span>
+        <span class="fr-team">${item.team}</span>
+        <span class="fr-points">${item.points}<span class="fr-pts-unit">pt</span></span>
+      </button>`;
+    }).join('');
+
+    // 競技別 1〜18位
+    function buildSportSection(sport){
+      const sportAllClasses = [...new Set(SCHEDULE.filter(g=>!g.bracket && g.sport===sport).flatMap(g=>[g.home, g.away]))];
+      const sportRanks = {};
+      ['松','竹','梅'].forEach(grade=>{
+        const ranks2 = getRankingForGrade(sport, grade);
+        const baseRank = grade === '松' ? 0 : grade === '竹' ? 6 : 12;
+        ranks2.forEach((team, idx)=>{
+          if(team) sportRanks[team] = baseRank + idx + 1;
+        });
+      });
+      const ranked = sportAllClasses.filter(c=>sportRanks[c]).sort((a,b)=>sportRanks[a]-sportRanks[b]);
+      const unranked = sportAllClasses.filter(c=>!sportRanks[c]).sort();
+      const rankedHtml = ranked.map(team=>{
+        const rank = sportRanks[team];
+        let rc = 'fr-rank-default';
+        if(rank === 1) rc = 'fr-rank-gold';
+        else if(rank === 2) rc = 'fr-rank-silver';
+        else if(rank === 3) rc = 'fr-rank-bronze';
+        return `<button class="fr-row" data-team="${team}" data-sport="${sport}">
+          <span class="fr-rank ${rc}">${rank}位</span>
+          <span class="fr-team">${team}</span>
+        </button>`;
+      }).join('');
+      const unrankedHtml = unranked.map(team=>{
+        return `<button class="fr-row" data-team="${team}" data-sport="${sport}">
+          <span class="fr-rank fr-rank-default">未確定</span>
+          <span class="fr-team">${team}</span>
+        </button>`;
+      }).join('');
+      return `<div class="fr-group">
+        <h3 class="fr-group-title">${sport} 順位</h3>
+        <div class="fr-rows">${rankedHtml}${unrankedHtml}</div>
+      </div>`;
+    }
+
+    if(!window._viewerFinalTab) window._viewerFinalTab = 'overall';
+    const currentTab = window._viewerFinalTab;
+    const overallTab = `<button class="fr-tab ${currentTab==='overall'?'active':''}" data-tab="overall">競技総合</button>`;
+    const sportTabs = sportsList.map(s=>
+      `<button class="fr-tab ${s===currentTab?'active':''}" data-tab="${s}">${s}</button>`
+    ).join('');
+    const tabsHtml = `
+      <div class="fr-tabs-overall">${overallTab}</div>
+      <div class="fr-tabs-sports">${sportTabs}</div>
+    `;
+
+    let mainContent;
+    if(currentTab === 'overall'){
+      mainContent = `
+        <div class="fr-info">
+          <strong>点数体系：</strong>各競技で1位=18点、2位=17点、3位=16点、…、18位=1点。<br>
+          全6競技の合計点で競技総合順位を算出します。
+        </div>
+        <div class="fr-group">
+          <h3 class="fr-group-title">競技総合 順位</h3>
+          <div class="fr-rows">${rowsHtml}</div>
+        </div>`;
+    } else {
+      mainContent = buildSportSection(currentTab);
+    }
+
+    return `<div class="fr-container">
+      ${!isComplete ? `<div class="fr-warn">⚠ まだ全試合が終了していません（${totalDone}/${totalGames}完了）。表示は途中経過です。</div>` : ''}
+      <div class="fr-tabs">${tabsHtml}</div>
+      ${mainContent}
+    </div>`;
+  }
+  
+  // クラス詳細モーダル
+  window._openClassDetailModal = function(team, filterSport){
+    const overlay = document.createElement('div');
+    overlay.className = 'fr-modal-overlay';
+    const titleSuffix = filterSport ? ` の${filterSport}戦績` : ' の戦績';
+    overlay.innerHTML = `
+      <div class="fr-modal">
+        <div class="fr-modal-head">
+          <span class="fr-modal-title">${team}${titleSuffix}</span>
+          <button class="fr-modal-close" aria-label="閉じる">×</button>
+        </div>
+        <div class="fr-modal-body">${buildClassView(team, filterSport)}</div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    overlay.querySelector('.fr-modal-close').onclick = ()=>overlay.remove();
+    overlay.onclick = (e)=>{ if(e.target === overlay) overlay.remove(); };
+  };
 
   // ==== トーナメント表ビュー（3サブタブ） ====
   function buildTournamentView(selSport, selGrade, subTab){
@@ -1593,18 +2040,18 @@ function render(snapshot){
             <foreignObject x="360" y="150" width="60" height="64">${matchBox('final', sf1Win, sf2Win)}</foreignObject>
           </svg>
         </div>
-        ${finalWin ? `<div class="vt-champion">優勝 ${finalWin}</div>` : ''}
+        ${finalWin ? `<div class="vt-champion">${selGrade}優勝 ${finalWin}</div>` : ''}
       </div>
       <div class="vt-extras">
         <div class="vt-extra-card">
           <h4>3位決定戦</h4>
           ${matchBox('third', sf1Lose, sf2Lose)}
-          ${thirdWin ? `<div class="vt-rank-result third">3位: ${thirdWin}</div>` : ''}
+          ${thirdWin ? `<div class="vt-rank-result third">${selGrade}T 3位: ${thirdWin}</div>` : ''}
         </div>
         <div class="vt-extra-card">
           <h4>5位決定戦</h4>
           ${matchBox('fifth', r1aLose, r1bLose)}
-          ${fifthWin ? `<div class="vt-rank-result fifth">5位: ${fifthWin}</div>` : ''}
+          ${fifthWin ? `<div class="vt-rank-result fifth">${selGrade}T 5位: ${fifthWin}</div>` : ''}
         </div>
       </div>`;
     }
@@ -1647,6 +2094,7 @@ function render(snapshot){
     <section id="sec-standings"><h2>順位表</h2>${standingsHtml}</section>
     <section id="sec-class"><h2>クラス別戦績</h2><div id="class-view-container">${buildClassView(window._viewerSelectedClass)}</div></section>
     <section id="sec-tournament"><h2>決勝トーナメント</h2><div id="tournament-view-container">${buildTournamentView(window._viewerSelectedSport, window._viewerSelectedGrade, window._viewerTournamentSubtab)}</div></section>
+    <section id="sec-final"><h2>🏆 最終結果（競技総合順位）</h2><div id="final-view-container">${buildFinalResultView()}</div></section>
     <section id="sec-schedule"><h2>試合スケジュール</h2>${scheduleHtml}</section>
     <div class="footer">スナップショット：${dateStr} / 体育祭速報ビューア</div>
     <div style="height:80px"></div>
@@ -1657,6 +2105,7 @@ function render(snapshot){
       <button class="bt-btn" data-target="sec-standings"><span class="bt-ico">🏆</span><span>順位</span></button>
       <button class="bt-btn" data-target="sec-class"><span class="bt-ico">👥</span><span>クラス</span></button>
       <button class="bt-btn" data-target="sec-tournament"><span class="bt-ico">🥇</span><span>決勝T</span></button>
+      <button class="bt-btn" data-target="sec-final"><span class="bt-ico">🎖</span><span>最終</span></button>
       <button class="bt-btn" data-target="sec-schedule"><span class="bt-ico">📋</span><span>日程</span></button>
     </nav>
   `;
@@ -1715,6 +2164,39 @@ function render(snapshot){
     });
   }
   attachTournamentBtnEvents();
+  
+  // 最終結果のクラスタップ→モーダル表示、タブ切り替え
+  function attachFinalBtnEvents(){
+    document.querySelectorAll('.fr-row').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const team = b.dataset.team;
+        const sport = b.dataset.sport;
+        if(team) window._openClassDetailModal(team, sport);
+      });
+    });
+    document.querySelectorAll('.fr-tab').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const tab = b.dataset.tab;
+        if(!tab) return;
+        window._viewerFinalTab = tab;
+        // 最終結果セクションだけを再描画
+        const finalSection = document.querySelector('#sec-final');
+        if(finalSection){
+          const containerId = 'final-view-container';
+          let container = document.getElementById(containerId);
+          if(!container){
+            // 初回作成時は<section>にidを付ける構造でない場合があるので親に書き換え
+            container = finalSection.querySelector('.fr-container').parentElement;
+          }
+          if(container){
+            container.innerHTML = buildFinalResultView();
+            attachFinalBtnEvents();
+          }
+        }
+      });
+    });
+  }
+  attachFinalBtnEvents();
 }
 
 // 初期化
